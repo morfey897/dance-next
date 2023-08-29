@@ -4,6 +4,8 @@ import { ParamsType } from '@/types'
 import Image from 'next/image'
 import { currentLocale } from 'next-i18n-router';
 
+export const runtime = 'edge';
+
 export default function Home() {
   const locale = currentLocale();
   return (

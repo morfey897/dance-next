@@ -1,6 +1,8 @@
 // app/not-found.tsx
 import Link from 'next/link';
 
+export const runtime = 'edge';
+
 export default function NotFound() {
   return (
     <div className='w-4/5 mx-auto mt-20 flex flex-col justify-center items-center space-y-4'>
