@@ -3,11 +3,14 @@ import "server-only";
 import Image from 'next/image'
 import { currentLocale } from 'next-i18n-router';
 
+import { headers } from 'next/headers';
+
 export const runtime = 'edge';
 
 export default function Home(props: any) {
   const locale = currentLocale();
   const propsJS = JSON.stringify(props);
+  const headersJS = JSON.stringify(headers().entries())
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>propsJS: {propsJS}</div>
