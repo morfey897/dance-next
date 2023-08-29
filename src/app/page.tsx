@@ -5,8 +5,6 @@ import { currentLocale } from 'next-i18n-router';
 
 import { headers } from 'next/headers';
 
-export const runtime = 'edge';
-
 export default function Home(props: any) {
   const locale = currentLocale();
   const propsJS = JSON.stringify(props);
