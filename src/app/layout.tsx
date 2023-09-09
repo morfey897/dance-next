@@ -1,8 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Comfortaa } from 'next/font/google'
-import { currentLocale } from "next-i18n-router"
-import { defaultLocale } from '../../i18n.config';
+import { getLocale } from "@/headers"
 
 const font = Comfortaa({ subsets: ['latin'], weight: ['300', '400', '500'] });
 
@@ -16,9 +15,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode,
 }) {
-  const locale = currentLocale();
+  const locale = getLocale();
   return (
-    <html lang={locale || defaultLocale}>
+    <html lang={locale}>
       <body className={font.className}>{children}</body>
     </html>
   )

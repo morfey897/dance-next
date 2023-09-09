@@ -1,10 +1,34 @@
 import Image from 'next/image'
 import { currentLocale } from "next-i18n-router"
+import { headers } from 'next/headers';
+import type { Metadata } from 'next';
 
-export const runtime = 'edge';
+import { getTitle, getMetadata, getJSON_LD } from "@/utils/seo";
+import { urlFor, request } from "@/services/sanity";
+
+import { PageType, query as queryPage } from "@/models/page";
+import { SettingsType, query as querySettings } from "@/models/settings";
+
+export const SLUG = '/';
+
+async function getPage() {
+  const response = await request<{ page: PageType; settings: SettingsType }>(
+    {
+      page: queryPage({ slug: SLUG }),
+      settings: querySettings(),
+    });
+  return response;
+}
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { page, settings } = await getPage();
+  return getMetadata(page, settings);
+}
 
 export default function Home() {
   const locale = currentLocale();
+  
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -21,7 +45,7 @@ export default function Home() {
           >
             By BLOG{' '}
             <Image
-              src="/vercel.svg"
+              src="/assets/vercel.svg"
               alt="Vercel Logo"
               className="dark:invert"
               width={100}
@@ -35,7 +59,7 @@ export default function Home() {
       <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
         <Image
           className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
+          src="/assets/next.svg"
           alt="Next.js Logo"
           width={180}
           height={37}
