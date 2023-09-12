@@ -1,51 +1,45 @@
-import clsx from "clsx";
-// import { useEffect, useState } from "react";
-import DirectionItem from "./Item";
-import Section from "../../elements/Section";
+import Article from "../../elements/Article";
 import Headline from "../../elements/Headline";
-import Picture from "../../elements/Picture";
 
 import RenderHTML from "../../elements/RenderHTML";
 
 import { SectionType } from "@/models/page";
+import { request } from "@/services/sanity";
+import { DirectionType, query as queryDirections } from "@/models/direction";
 
-function Directions({ headline, anchor, divisions, body }: SectionType) {
+import { getLocale } from '@/headers';
 
-  const active = { cur: '', prev: '' };
+import { buildAsset } from "@/components/elements/Asset";
 
-  console.log('divisions', divisions);
-  // const [active, setActive] = useState({ cur: '', prev: '' });
+import ClientWrapper from "./ClientWrapper";
+import { ImageType } from "@/models/_default";
+import Section from "@/components/elements/Section";
 
-  // useEffect(() => {
-  //   if (sections && sections.length) {
-  //     setActive({ cur: sections[0]._id, prev: '' });
-  //   }
-  // }, [sections]);
+async function getDirections(ids: Array<string> | undefined) {
+  if (!ids || ids.length === 0) return [];
+  const locale = getLocale();
+  return await request<Array<DirectionType>>(queryDirections({
+    locale, ids
+  }));
+}
 
-  return <Section effect={{ x: 'left', y: 'center' }} anchor={anchor?.tag}>
-    <Headline headline={headline}>
-      <RenderHTML value={body} />
-    </Headline>
-    <div className="flex mt-12 flex-col lg:flex-row">
-      <div className="grow w-full">
-        <div className="lg:min-h-[500px]">
-          {/* {sections?.map((item: SectionType, index: number) => (
-            <DirectionItem key={`direction-${item._id}`} item={item} index={index} activePrev={active.prev} activeCur={active.cur} onClick={() => {
-              // setActive(({ cur }) => ({ prev: cur, cur: item._id }));
-            }} />
-          ))} */}
-        </div>
-      </div>
-      <div className="grow w-full mt-4 lg:mt-0 relative min-h-[217px] md:min-h-[450px] lg:min-h-auto overflow-hidden">
-        {/* {sections?.map((item) => (
-          <Picture key={`image-${item._id}`} className={clsx("absolute transition-opacity duration-500 opacity-0 w-full object-contain lg:object-cover h-[217px] md:h-[450px] lg:h-auto", {
-            '!opacity-0': active.prev === item._id,
-            '!opacity-100': active.cur === item._id,
-          })} image={active.prev === item._id || active.cur === item._id ? (item.images || [])[0] : undefined} alt={item.headline} />
-        ))} */}
-      </div>
-    </div>
-  </Section>;
+async function Directions({ headline, anchor, divisions, body }: SectionType) {
+
+  const directions: Array<DirectionType> = await getDirections(divisions?.map(({ _id }) => _id));
+
+  const images = directions.reduce<Record<string, Array<ImageType>>>((prev, item) => {
+    prev[item._id] = item.images?.map(asset => buildAsset(asset)) || [];
+    return prev;
+  }, {});
+
+  return <Article effect={{ x: 'left', y: 'center' }} anchor={anchor?.tag}>
+    <Section animate="b-t">
+      <Headline headline={headline}>
+        <RenderHTML value={body} />
+      </Headline>
+      {directions?.length > 0 && <ClientWrapper directions={directions} images={images} />}
+    </Section>
+  </Article>;
 }
 
 export default Directions;

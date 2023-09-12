@@ -1,9 +1,11 @@
+'use client';
+
 import clsx from "clsx";
 import React from "react";
 import RenderHTML from "@/components/elements/RenderHTML";
-import { SectionType } from "@/models/page";
+import { DirectionType } from "@/models/direction";
 
-function DirectionItem({ item, index, activePrev, activeCur, children, ...props }: { item: SectionType; index: number; activePrev: string, activeCur: string; } & React.HTMLProps<HTMLLIElement>) {
+function DirectionItem({ item, index, activePrev, activeCur, children, ...props }: { item: DirectionType; index: number; activePrev: string, activeCur: string; } & React.HTMLProps<HTMLLIElement>) {
   // @ts-ignore
   return (<div role={'button'} className={clsx("border-b border-opacity-40 border-pnk-200 py-4", activeCur === item._id && 'pointer-events-none')} {...props}>
     <div className={clsx("flex justify-between items-start cursor-pointer")}>

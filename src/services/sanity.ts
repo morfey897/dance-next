@@ -23,11 +23,22 @@ export const urlFor = (source?: SanityImageSource) => builder.image(source || pr
 
 export async function request<Type>(query: string | Record<string, string>, options?: FilteredResponseQueryOptions): Promise<Type> {
   let response;
+  const index = (Math.random() * 100000).toFixed();
   const q = typeof query === 'string' ? query : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
+  if (process.env.NODE_ENV === 'development') {
+    console.info(`<Request id="${index}">`);
+    console.info(q);
+    console.info("<Request/>");
+  }
   try {
     response = await client.fetch(q, undefined, options || { filterResponse: true });
   } catch (error) {
     response = {};
+  }
+  if (process.env.NODE_ENV === 'development') {
+    console.info(`<Response id="${index}">`);
+    console.info(JSON.stringify(response));
+    console.info("<Response/>");
   }
   return response;
 }

@@ -1,53 +1,37 @@
-import { AssetType } from "@/models/page";
-import { lazy, useMemo } from "react";
-import Image from 'next/image';
-import { urlFor } from "@/services/sanity";
-// import { concatPaths } from "../../utils/url";
-// import { useEnv } from "../providers/EnvProvider";
+"use client";
+import { ImageType } from "@/models/_default";
+import clsx from "clsx";
+import NextImage from 'next/image';
+import { useState } from "react";
 
+const LoadingIndicator = ({ loaded }: { loaded: boolean }) => (
+  <div className={clsx("absolute left-1/2 top-1 -translate-x-1/2", loaded && 'hidden')} role="status">
+    <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]">
+      <span className="relative !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]" />
+    </div>
+  </div>
+);
 
-const getDimension = (id: string) => {
-  id = id.trim();
-  const [width, height] = (id.match(/-(\d+)x(\d+)(?:\.[\w\d]+\?)?/) || [])
-    .slice(1, 3)
-    .map((num: string) => parseInt(num, 10));
+function Picture({ alt, src, width, height, showLoadingState, className, ...props }: { showLoadingState?: boolean } & ImageType & React.HTMLAttributes<HTMLElement>) {
 
-  const aspectRatio = width / height;
-  return { width, height, aspectRatio };
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <picture className={clsx('relative', className)} {...props}>
+      {!!src && <NextImage
+        src={src}
+        alt={alt || ''}
+        width={width}
+        height={height}
+        loading={showLoadingState ? 'lazy' : 'eager'}
+        onLoadingComplete={() => {
+          setLoaded(true);
+        }}
+      />}
+      {!!src && (showLoadingState === true || typeof showLoadingState === 'undefined') && <LoadingIndicator loaded={loaded} />}
+    </picture>
+  );
 }
 
-export function Picture({ image, alt: alternative, src: resource, width: w, height: h, quality, ...props }: { image?: AssetType; quality?: number; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
-
-  const rest = useMemo<{ src: string; alt: string; width?: number; height?: number; }>(() => {
-
-    if (image) {
-      const asset = urlFor(image.image);
-      const id = asset.quality(quality || 75).url();
-      const dimensions = getDimension(id);
-
-      return {
-        src: id,
-        alt: image.alt ?? alternative,
-        width: dimensions.width || (typeof w === 'string' ? parseInt(w) : 0),
-        height: dimensions.height || (typeof h === 'string' ? parseInt(h) : 0),
-      }
-    }
-
-    return {
-      src: resource || '',
-      alt: alternative || '',
-      width: typeof w === 'string' ? parseInt(w) : 0,
-      height: typeof h === 'string' ? parseInt(h) : 0,
-    }
-
-  }, [image, alternative, resource]);
-
-  return <picture  {...props}>
-    <Image
-      {...rest}
-      loading={'lazy'}
-    />
-  </picture>;
-}
 
 export default Picture;

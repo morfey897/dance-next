@@ -1,6 +1,4 @@
-import { client } from "@/services/sanity";
-import { AssetType, GROQ_ASSET } from "./page";
-import { DefaultProps } from "./_default";
+import { DefaultProps, AssetType, GROQ_ASSET } from "./_default";
 
 export const GROQ_PHONE = 'code, number';
 export type PhoneType = {
