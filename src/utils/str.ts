@@ -7,3 +7,8 @@ export const formatPhone = ({ code, number }: PhoneType) => {
 
   return [code, number].filter(a => !!a).join(" ");
 }
+
+export function capitalize(str: string | undefined) {
+  str = str || "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

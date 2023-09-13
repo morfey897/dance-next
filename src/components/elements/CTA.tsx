@@ -1,4 +1,4 @@
-import { CTAType } from "@/models/page";
+import { CTAType } from "@/models/_default";
 import { useMemo } from "react";
 
 function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { cta?: CTAType }) {
@@ -22,7 +22,7 @@ function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { 
   }, [cta]);
 
   return <a aria-label={cta?.title || ""} {...rest} {...props}>
-    {children}
+    {!!children ? children : cta?.title}
   </a>
 }
 

@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { urlFor } from "@/lib/sanity";
 import { locales, defaultLocale } from "../../i18n.config";
 import { getPathname, getSubPathname } from '@/headers';
+import { findImage } from "./filter";
 
 export const getTitle = (pageTitle: string, rootTitle?: String) => [(pageTitle || "").trim(), (rootTitle || "").trim()].filter(a => !!a).join(" | ");
 
@@ -47,7 +48,7 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
 export const getJSON_LD = (props: SettingsType) => ({
   "@context": "https://schema.org/",
   "@type": "DanceSchool",
-  "image": urlFor(props?.image?.image).url(),
+  "image": urlFor(findImage(props?.images, '!head')?.image).url(),
   "url": "https://studio-kalipso.com/uk",
   "name": props?.title,
   "description": props?.description,

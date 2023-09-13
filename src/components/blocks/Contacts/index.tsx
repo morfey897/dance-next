@@ -34,8 +34,8 @@ function Contacts({ headline, images, anchor, body, settings }: { settings: Sett
             {(images?.length || 0) > 0 && <div className="flex gap-2 mt-5 flex-wrap">
               {images?.map((image, index) => <div key={index} className={clsx('relative w-full md:w-[240px] h-[240px] md:h-auto')}>
                 <Asset key={index} asset={image} className="w-[inherit] h-[inherit] [&>img]:object-cover [&>img]:w-[inherit] [&>img]:h-[inherit]" />
-                {(typeof image === "object" && !!image.alt) && <div className="text-sm absolute bottom-0 left-0 right-0 bg-[#161616]">
-                  <p className="px-1 py-1">{image.alt}</p>
+                {(typeof image === "object" && !!image.caption || !!image.alt) && <div className="text-sm absolute bottom-0 left-0 right-0 bg-[#161616]">
+                  <p className="px-1 py-1">{image.caption || image.alt}</p>
                 </div>}
               </div>
               )}

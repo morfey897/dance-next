@@ -5,11 +5,12 @@ import RenderHTML from "@/components/elements/RenderHTML";
 import CTA from "@/components/elements/CTA";
 import { SectionType } from "@/models/page";
 import Section from "@/components/elements/Section";
+import { findImage } from "@/utils/filter";
 
 function About({ headline, body, anchor, callToAction, images }: SectionType) {
 
-  const bgImage = images?.find(img => !!img?.tags?.find(tag => tag.tag === 'bg'));
-  const image = images?.find(img => !!img?.tags?.find(tag => tag.tag !== 'bg'));
+  const bgImage = findImage(images, 'bg');
+  const image = findImage(images, '!bg');
 
   return <>
     <div className="absolute inset-0 z-0">

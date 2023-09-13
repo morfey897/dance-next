@@ -9,27 +9,30 @@ import { urlFor, request } from "@/lib/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
 import { SettingsType, query as querySettings } from "@/models/settings";
 
+import Header from '@/components/Header';
+
 export const SLUG = '/';
 
-async function getPage() {
-  const response = await request<{ page: PageType; settings: SettingsType }>(
-    {
-      page: queryPage({ slug: SLUG }),
-      settings: querySettings(),
-    });
-  return response;
-}
+// async function getPage() {
+//   const response = await request<{ page: PageType; settings: SettingsType }>(
+//     {
+//       page: queryPage({ slug: SLUG }),
+//       settings: querySettings(),
+//     });
+//   return response;
+// }
 
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { page, settings } = await getPage();
-  return getMetadata(page, settings);
-}
+// export async function generateMetadata(): Promise<Metadata> {
+//   const { page, settings } = await getPage();
+//   return getMetadata(page, settings);
+// }
 
 export default function Home() {
   const locale = currentLocale();
-  
-  return (
+
+  return (<>
+    <Header logo={undefined} navigation={undefined} langs={['uk', 'en']} />
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
@@ -137,5 +140,6 @@ export default function Home() {
         </a>
       </div>
     </main>
+  </>
   )
 }

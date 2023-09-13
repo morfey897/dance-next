@@ -27,11 +27,11 @@ export type AddressType = {
   street: string;
 };
 
-export const GROQ_SETTINGS = `title, description, image->{${GROQ_ASSET}}, phones[]->{${GROQ_PHONE}}, socials[]->{${GROQ_SOCIAL}}, address->{${GROQ_ADDRESS}}`;
+export const GROQ_SETTINGS = `title, description, images[]->{${GROQ_ASSET}}, phones[]->{${GROQ_PHONE}}, socials[]->{${GROQ_SOCIAL}}, address->{${GROQ_ADDRESS}}`;
 export type SettingsType = {
   title: string;
   description: string;
-  image: AssetType,
+  images: Array<AssetType>,
   phones: Array<PhoneType>;
   socials: Array<SocialType>;
   address: AddressType;
