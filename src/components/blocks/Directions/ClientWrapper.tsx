@@ -2,14 +2,15 @@
 
 import clsx from "clsx";
 import DirectionItem from "./Item";
-import Picture from "../../elements/Picture";
+import Picture from "@/components/elements/Picture";
 
 import { DirectionType } from "@/models/direction";
 import { useEffect, useState } from "react";
-import { ImageType } from "@/models/_default";
+import { AssetType, ImageType } from "@/models/_default";
 import Section from "@/components/elements/Section";
+import { buildAsset } from "@/services/sanity";
 
-function ClientWrapper({ directions, images }: { directions: Array<DirectionType>; images: Record<string, Array<ImageType>> }) {
+function ClientWrapper({ directions }: { directions: Array<DirectionType>; }) {
 
   const [active, setActive] = useState({ cur: '', prev: '' });
 
@@ -36,7 +37,7 @@ function ClientWrapper({ directions, images }: { directions: Array<DirectionType
     <div className="relative grow w-full mt-4 lg:mt-0 min-h-[217px] md:min-h-[450px] lg:min-h-auto overflow-hidden">
       <Section animate="r-l">
         {directions?.map((item) => {
-          const image: ImageType = ((images && images[item._id]) || [])[0];
+          const image: ImageType = buildAsset((item.images || [])[0]);
           return <Picture key={`image-${item._id}`} className={clsx("!absolute top-0 transition-opacity duration-500 opacity-0 w-full object-contain lg:object-cover h-[217px] md:h-[450px] lg:h-auto", {
             '!opacity-0': active.prev === item._id,
             '!opacity-100': active.cur === item._id,

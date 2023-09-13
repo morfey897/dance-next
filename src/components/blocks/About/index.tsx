@@ -1,6 +1,6 @@
 import clsx from "clsx";
-import Article from "../../elements/Article";
-import Asset from "../../elements/Asset";
+import Article from "@/components/elements/Article";
+import Asset from "@/components/elements/Asset";
 import RenderHTML from "@/components/elements/RenderHTML";
 import CTA from "@/components/elements/CTA";
 import { SectionType } from "@/models/page";

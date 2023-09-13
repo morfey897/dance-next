@@ -23,7 +23,7 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
   return {
     title: getTitle(page.title, settings.title),
     description: page.seoDescription || "",
-    metadataBase: new URL(process.env.DOMAIN || ""),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
     openGraph: {
       title: page.ogTitle || "",
       description: page.ogDescription || "",

@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image'
 import { getLocale } from '@/headers';
 
-import { urlFor, request } from "@/services/sanity";
+import { urlFor, request } from "@/services/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
 import { SettingsType, query as querySettings } from "@/models/settings";
 import { getMetadata, getJSON_LD } from "@/utils/seo";

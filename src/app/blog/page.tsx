@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import type { Metadata } from 'next';
 
 import { getTitle, getMetadata, getJSON_LD } from "@/utils/seo";
-import { urlFor, request } from "@/services/sanity";
+import { urlFor, request } from "@/services/sanity.server";
 
 import { PageType, query as queryPage } from "@/models/page";
 import { SettingsType, query as querySettings } from "@/models/settings";

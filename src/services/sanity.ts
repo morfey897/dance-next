@@ -1,44 +1,25 @@
-import { createClient } from '@sanity/client';
-import type { FilteredResponseQueryOptions } from '@sanity/client';
 import imageUrlBuilder from "@sanity/image-url";
-import { ImageUrlBuilder } from '@sanity/image-url/lib/types/builder';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-
-const API_VERSION = `v${new Date().toISOString().split("T")[0]}`;
-
-export const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID,
-  dataset: process.env.SANITY_DATASET,
-  useCdn: process.env.NODE_ENV === 'production', // set to `false` to bypass the edge cache
-  apiVersion: API_VERSION, // use current date (YYYY-MM-DD) to target the latest API version
-  token: process.env.SANITY_SECRET_TOKEN // Only if you want to update content with the client
-});
+import { AssetType, ImageType } from "@/models/_default";
 
 const builder = imageUrlBuilder({
-  projectId: process.env.SANITY_PROJECT_ID || "",
-  dataset: process.env.SANITY_DATASET || "",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "",
 });
 
-export const urlFor = (source?: SanityImageSource) => builder.image(source || process.env.NO_IMAGE || "");
+export const urlFor = (source?: SanityImageSource) => builder.image(source || process.env.NEXT_PUBLIC_NO_IMAGE || "");
 
-export async function request<Type>(query: string | Record<string, string>, options?: FilteredResponseQueryOptions): Promise<Type> {
-  let response;
-  const index = (Math.random() * 100000).toFixed();
-  const q = typeof query === 'string' ? query : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
-  if (process.env.NODE_ENV === 'development') {
-    console.info(`<Request id="${index}">`);
-    console.info(q);
-    console.info("<Request/>");
+export function buildAsset(asset: AssetType, quality: number = 75): ImageType {
+  const builder = urlFor(asset.image);
+  const id = builder.quality(quality || 75).url();
+  const [width, height] = (id.match(/-(\d+)x(\d+)(?:\.[\w\d]+\?)?/) || [])
+    .slice(1, 3)
+    .map((num: string) => parseInt(num, 10));
+
+  return {
+    src: id,
+    alt: asset.alt,
+    width: width,
+    height: height,
   }
-  try {
-    response = await client.fetch(q, undefined, options || { filterResponse: true });
-  } catch (error) {
-    response = {};
-  }
-  if (process.env.NODE_ENV === 'development') {
-    console.info(`<Response id="${index}">`);
-    console.info(JSON.stringify(response));
-    console.info("<Response/>");
-  }
-  return response;
 }
