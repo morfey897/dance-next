@@ -8,7 +8,7 @@ import { DirectionType } from "@/models/direction";
 import { useEffect, useState } from "react";
 import { AssetType, ImageType } from "@/models/_default";
 import Section from "@/components/elements/Section";
-import { buildAsset } from "@/services/sanity";
+import { buildAsset } from "@/lib/sanity";
 
 function ClientWrapper({ directions }: { directions: Array<DirectionType>; }) {
 

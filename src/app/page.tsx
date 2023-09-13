@@ -2,10 +2,10 @@ import { use } from "react";
 import { headers } from 'next/headers';
 import type { Metadata } from 'next';
 
-import Image from 'next/image'
+
 import { getLocale } from '@/headers';
 
-import { urlFor, request } from "@/services/sanity.server";
+import { request } from "@/lib/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
 import { SettingsType, query as querySettings } from "@/models/settings";
 import { getMetadata, getJSON_LD } from "@/utils/seo";
@@ -34,8 +34,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Factory sections={page.sections} />
-      {/* <About headline={page.title} /> */}
+      <Factory sections={page.sections} settings={settings} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getJSON_LD(settings)) }} />
     </main>
   )

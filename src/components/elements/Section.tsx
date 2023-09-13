@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import { useInView } from "react-intersection-observer";
 
-function Section({ className, children, animate, ...rest }: { animate?: 'b-t' | 'l-r' | 'r-l' } & React.HTMLProps<HTMLElement>) {
+function Section({ className, children, render, animate, ...rest }: { animate?: 'b-t' | 'l-r' | 'r-l' } & { render?: ((inView: boolean) => JSX.Element) } & React.HTMLProps<HTMLElement>) {
 
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -19,6 +19,7 @@ function Section({ className, children, animate, ...rest }: { animate?: 'b-t' | 
         '-translate-x-48': animate === 'l-r',
       }, inView && '!translate-y-0 !translate-x-0', className)} {...rest}>
       {children}
+      {typeof render === 'function' && render(inView)}
     </section>
   );
 }

@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googlemaps/markerwithlabel": "^2.0.23",
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@portabletext/react": "^3.0.7",
     "@sanity/client": "^6.4.9",
     "@sanity/image-url": "^1.0.2",
@@ -24,11 +26,13 @@
     "tailwindcss-hyphens": "^0.1.0"
   },
   "devDependencies": {
+    "@types/google.maps": "^3.54.0",
     "@types/lodash": "^4.14.198",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "core-js": "^3.32.2",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "postcss": "8.4.28",

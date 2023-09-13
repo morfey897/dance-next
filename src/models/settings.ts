@@ -9,7 +9,7 @@ export type PhoneType = {
 export const GROQ_SOCIAL = 'title, type, link';
 export type SocialType = {
   title: string;
-  type: 'instagram' | 'fb' | 'ticktok' | 'telegram' | 'viber' | 'whatsapp';
+  type: 'instagram' | 'fb' | 'tiktok' | 'telegram' | 'viber' | 'whatsapp';
   link: string;
 };
 

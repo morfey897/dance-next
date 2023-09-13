@@ -1,7 +1,7 @@
 import { AssetType, ImageType } from "@/models/_default";
 import { useMemo } from "react";
 import Picture from './Picture';
-import { buildAsset } from "@/services/sanity";
+import { buildAsset } from "@/lib/sanity";
 
 function Asset({ asset, alt: alternative, src: resource, width: w, height: h, quality, asBackground, ...props }: { asset?: AssetType; asBackground?: boolean; quality?: number; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
 

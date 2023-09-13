@@ -4,7 +4,7 @@ import Headline from "@/components/elements/Headline";
 import RenderHTML from "@/components/elements/RenderHTML";
 
 import { SectionType } from "@/models/page";
-import { request } from "@/services/sanity.server";
+import { request } from "@/lib/sanity.server";
 import { DirectionType, query as queryDirections } from "@/models/direction";
 
 import { getLocale } from '@/headers';
