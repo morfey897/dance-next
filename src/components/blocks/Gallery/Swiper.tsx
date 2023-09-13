@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useMemo, useState, useCallback, useEffect, FC } from "react";
-import { throttle } from "throttle-debounce";
+import { throttle } from "lodash";
 import clsx from "clsx";
 import SwiperItem from "./SwiperItem";
 import type { ControlsType } from "./Controls";
@@ -61,14 +61,14 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
     return max.index;
   }, [scales]);
 
-  const onScroll = useMemo(() => throttle(100, () => {
+  const onScroll = useMemo(() => throttle(() => {
     setScales(calculateScale(ref.current));
-  }), []);
+  }, 150), []);
 
-  const onResize = useMemo(() => throttle(300, () => {
+  const onResize = useMemo(() => throttle(() => {
     smoothScroll(startAt ?? 0, ref.current, 'auto');
     setScales(calculateScale(ref.current));
-  }), []);
+  }, 300), []);
 
   const onSelectPage = useCallback((page: number) => {
     smoothScroll(page, ref.current);
@@ -104,7 +104,7 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
 
   return <div className={clsx("relative", className)} {...props} ref={(autoScroll || 0) > 0 ? inViewRef : undefined}>
     <ul
-      onScroll={!!items ? onScroll : undefined}
+      onScroll={onScroll}
       ref={ref}
       className={clsx("mt-12 snap-x snap-mandatory flex hide-scroll overflow-x-auto opacity-0",
         "xl:gap-x-[48px]",
