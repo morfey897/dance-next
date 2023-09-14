@@ -15,7 +15,7 @@ const ICONS = {
 
 
 function SocialMedia({ type, title, link, ...props }: SocialType & React.HTMLProps<HTMLAnchorElement>) {
-  return <a aria-label={type} className="font-medium text-sm md:text-3xl flex gap-x-4 flex-row-reverse lg:flex-row items-baseline justify-center lg:justify-end" href={link} target="_blank" rel="noreferrer" {...props}>
+  return <a aria-label={type} className="font-medium text-sm md:text-3xl flex gap-x-4 flex-row-reverse lg:flex-row items-baseline justify-center lg:justify-end" href={link} target="_blank" rel="noreferrer noopener" {...props}>
     {title && <span>{title}</span>}
     <span className="inline-block fill-white">{ICONS[type]}</span>
   </a>;

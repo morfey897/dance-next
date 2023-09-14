@@ -25,7 +25,7 @@ function Contacts({ headline, images, anchor, body, settings }: { settings: Sett
         <Section animate="r-l">
           <div>
             <h2 className="uppercase text-3xl md:text-7xl text-left">{headline}</h2>
-            <a aria-label={addressMap} className="block text-base md:text-3xl mt-10 max-w-screen-md m-auto text-left underline" href={`https://www.google.com/maps/search/?api=1&query=${encodeURI(`${address?.place}`)}`} target="_blank" rel="noreferrer">{addressMap}</a>
+            <a aria-label={addressMap} className="block text-base md:text-3xl mt-10 max-w-screen-md m-auto text-left underline" href={`https://www.google.com/maps/search/?api=1&query=${encodeURI(`${address?.place}`)}`} target="_blank" rel="noreferrer noopener">{addressMap}</a>
             <div className="text-xs md:text-base mt-5 max-w-screen-md m-auto text-left">
               <RenderHTML value={body} />
             </div>

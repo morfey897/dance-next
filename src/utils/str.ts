@@ -12,3 +12,5 @@ export function capitalize(str: string | undefined) {
   str = str || "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+export const joinPath = (splitter: string, ...list: Array<string | number | undefined | null>) => list.filter(Boolean).join(splitter).replace(new RegExp(`\\${splitter}{2,}`, 'g'), splitter);

@@ -28,8 +28,42 @@ body {
       rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
 }
 
-strong {
+.block-content strong {
   font-weight: 500;
+}
+
+.block-content em {
+  font-style: italic;
+}
+
+.block-content h2 {
+  font-size: 1.875rem;
+  /* 30px */
+  line-height: 2.25rem;
+  /* 36px */
+}
+
+.block-content h3 {
+  font-size: 1.25rem;
+  /* 20px */
+  line-height: 1.75rem;
+  /* 28px */
+}
+
+.block-content h4 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.block-content ul {
+  list-style: disc;
+  margin: 0.75rem 0 0.75rem 1rem;
+}
+
+
+.block-content ol {
+  list-style: decimal;
+  margin: 0.75rem 0 0.75rem 1rem;
 }
 
 header,

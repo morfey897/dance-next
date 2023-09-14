@@ -16,7 +16,7 @@ function DirectionItem({ item, index, activePrev, activeCur, children, ...props 
         </div>
       </div>
       <div className="flex space-x-5 mr-0 md:mr-10 items-end" >
-        {/* {item.groups?.length > 0 && <p className="text-lg md:text-2xl font-light opacity-30">{item.groups.join(",")}</p>} */}
+        {(item.tags?.length || 0) > 0 && <p className="text-lg md:text-2xl font-light opacity-30">{item.tags?.map(t => t.tag).join(",")}</p>}
         <span className={clsx('transition', activeCur === item._id && 'rotate-45 active:transition-transform')}>
           <svg className="stroke-pnk-200" width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line x1="0.646447" y1="28.6469" x2="28.6464" y2="0.646935" />

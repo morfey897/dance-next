@@ -1,7 +1,12 @@
 import { PortableTextBlock } from '@portabletext/types';
 import { DefaultProps, TagType, GROQ_TAG, AssetType, GROQ_ASSET, CTAType, GROQ_CTA } from './_default';
 
-const GROQ_DIRECTION = `_id, headline, tags[]->{${GROQ_TAG}}, images[]->{${GROQ_ASSET}}, body, callToAction->{${GROQ_CTA}}`;
+const GROQ_DIRECTION = `_id, 
+  "headline": coalesce(headline[$locale], headline[$defaultLocale]), 
+  "body": coalesce(body[$locale], body[$defaultLocale]),  
+  tags[]->{${GROQ_TAG}}, 
+  images[]->{${GROQ_ASSET}}, 
+  callToAction->{${GROQ_CTA}}`;
 export type DirectionType = {
   _id: string;
   headline: string;

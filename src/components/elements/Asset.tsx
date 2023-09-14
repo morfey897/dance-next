@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import Picture from './Picture';
 import { buildAsset } from "@/lib/sanity";
 
-function Asset({ asset, alt: alternative, src: resource, width: w, height: h, quality, asBackground, ...props }: { asset?: AssetType; asBackground?: boolean; quality?: number; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
+function Asset({ asset, alt: alternative, src: resource, width: w, height: h, quality, asBackground, inline, ...props }: { asset?: AssetType; asBackground?: boolean; quality?: number; inline?: boolean; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
 
   const rest = useMemo<ImageType>(() => {
 
@@ -27,7 +27,7 @@ function Asset({ asset, alt: alternative, src: resource, width: w, height: h, qu
 
   }, [asset, alternative, resource, w, h]);
 
-  return <Picture {...props} {...rest} showLoadingState={!asBackground} />;
+  return <Picture {...props} {...rest} showLoadingState={!asBackground} inline={inline} />;
 }
 
 export default Asset;

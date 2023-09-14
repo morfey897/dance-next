@@ -7,17 +7,17 @@ import { SectionType } from "@/models/page";
 import { request } from "@/lib/sanity.server";
 import { DirectionType, query as queryDirections } from "@/models/direction";
 
-import { getLocale } from '@/headers';
-
 import ClientWrapper from "./ClientWrapper";
 import Section from "@/components/elements/Section";
 
 async function getDirections(ids: Array<string> | undefined) {
   if (!ids || ids.length === 0) return [];
-  const locale = getLocale();
-  return await request<Array<DirectionType>>(queryDirections({
-    locale, ids
-  }));
+  return await request<Array<DirectionType>>(
+    queryDirections({
+      ids
+    }),
+    { cache: 'force-cache' }
+  );
 }
 
 async function Directions({ headline, anchor, divisions, body }: SectionType) {

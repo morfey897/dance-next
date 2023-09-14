@@ -1,9 +1,4 @@
-import { use } from "react";
-import { headers } from 'next/headers';
 import type { Metadata } from 'next';
-
-
-import { getLocale } from '@/headers';
 
 import { request } from "@/lib/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
@@ -18,12 +13,13 @@ import Footer from "@/components/Footer";
 export const SLUG = '/';
 
 async function getPage() {
-  const locale = getLocale();
   return await request<{ page: PageType; settings: SettingsType }>(
     {
-      page: queryPage({ slug: SLUG, locale }),
-      settings: querySettings({ locale }),
-    });
+      page: queryPage({ slug: SLUG }),
+      settings: querySettings({}),
+    },
+    { cache: 'force-cache' }
+  );
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,7 +29,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const locale = getLocale();
   const { page, settings } = await getPage();
 
   const nav: Array<CTAType> = page.sections

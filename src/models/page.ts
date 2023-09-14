@@ -1,7 +1,15 @@
 import { PortableTextBlock } from '@portabletext/types';
 import { DefaultProps, TagType, GROQ_TAG, AssetType, GROQ_ASSET, CTAType, GROQ_CTA, WrapperType, GROQ_WRAPPER } from './_default';
 
-const GROQ_SECTION = `_id, headline, menuName, anchor->{${GROQ_TAG}}, wrapper->{${GROQ_WRAPPER}}, images[]->{${GROQ_ASSET}}, body, callToAction->{${GROQ_CTA}}, divisions[]->{_id}`;
+const GROQ_SECTION = `_id, 
+  "headline": coalesce(headline[$locale], headline[$defaultLocale]),
+  "menuName": coalesce(menuName[$locale], menuName[$defaultLocale]), 
+  "body": coalesce(body[$locale], body[$defaultLocale]),
+  anchor->{${GROQ_TAG}}, 
+  wrapper->{${GROQ_WRAPPER}}, 
+  images[]->{${GROQ_ASSET}}, 
+  callToAction->{${GROQ_CTA}}, 
+  divisions[]->{_id}`;
 export type SectionType = {
   _id: string;
   headline: string;
@@ -16,14 +24,20 @@ export type SectionType = {
   }>;
 }
 
-const GROQ_PAGE = `title, "slug": slug.current, seoDescription, ogTitle, ogDescription, ogImage->{${GROQ_ASSET}}, sections[]->{${GROQ_SECTION}}`;
+const GROQ_PAGE = `"slug": slug.current,
+  "title": coalesce(title[$locale], title[$defaultLocale]),
+  "description": coalesce(description[$locale], description[$defaultLocale]), 
+  "ogTitle": coalesce(ogTitle[$locale], ogTitle[$defaultLocale]), 
+  "ogDescription": coalesce(ogDescription[$locale], ogDescription[$defaultLocale]), 
+  ogImage->{${GROQ_ASSET}}, 
+  sections[]->{${GROQ_SECTION}}`;
 export type PageType = {
   name: string;
   title: string;
+  description: string;
   slug: string;
-  seoDescription: string;
-  ogTitle: string;
   ogDescription: string;
+  ogTitle: string;
   ogImage: AssetType;
   sections: Array<SectionType>;
 }

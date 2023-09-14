@@ -1,5 +1,7 @@
 import { createClient } from '@sanity/client';
 import type { FilteredResponseQueryOptions } from '@sanity/client';
+import i18nConfig from "../../i18n.config";
+import { getLocale } from '@/headers';
 
 const API_VERSION = `v${new Date().toISOString().split("T")[0]}`;
 
@@ -13,15 +15,16 @@ export const client = createClient({
 
 export async function request<Type>(query: string | Record<string, string>, options?: FilteredResponseQueryOptions): Promise<Type> {
   let response;
+  const locale = getLocale();
   const index = (Math.random() * 100000).toFixed();
   const q = typeof query === 'string' ? query : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
-  // if (process.env.NODE_ENV === 'development') {
-  //   console.info(`<Request id="${index}">`);
-  //   console.info(q);
-  //   console.info("<Request/>");
-  // }
+  if (process.env.NODE_ENV === 'development' && process.env.LOGGING === 'true') {
+    console.info(`<Request id="${index}">`);
+    console.info(q);
+    console.info("<Request/>");
+  }
   try {
-    response = await client.fetch(q, undefined, options || { filterResponse: true });
+    response = await client.fetch(q, { defaultLocale: i18nConfig.defaultLocale, locale }, { filterResponse: true, ...options } || {});
   } catch (error) {
     response = {};
   }

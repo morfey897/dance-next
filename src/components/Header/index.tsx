@@ -2,23 +2,13 @@
 
 import clsx from "clsx";
 import { useScrollDirection } from "../hooks/useScrollDetect";
-import { useCurrentLocale } from "next-i18n-router/client";
-import i18nConfig from "../../../i18n.config";
 import { usePathname } from 'next/navigation';
 import Asset from "@/components/elements/Asset";
 import { AssetType, CTAType } from "@/models/_default";
 import CTA from "../elements/CTA";
-
-const TRANSLATE: Record<string, { short: string; long: string; }> = {
-  uk: {
-    long: 'Українська',
-    short: 'Укр',
-  },
-  en: {
-    long: 'English',
-    short: 'Eng'
-  },
-}
+import { translation } from "../../../i18n.config";
+import { useLocale } from "../hooks/useLocale";
+import { joinPath } from "@/utils/str";
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -43,19 +33,19 @@ const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> =
   )
 }
 
-function changeLang(pathname: string, toLang: string, locale: string) {
+function changeLang(pathname: string, toLang: string, { locale, defaultLocale }: { locale: string; defaultLocale: string }) {
   if (toLang === locale) return;
-  if (locale === i18nConfig.defaultLocale) return `/${toLang}${pathname}`;
+  if (locale === defaultLocale) return `/${toLang}${pathname}`;
   pathname = pathname.replace(`/${locale}`, "");
-  if (toLang === i18nConfig.defaultLocale) return pathname;
+  if (toLang === defaultLocale) return pathname;
   return `/${toLang}${pathname}`;
 }
 
 const LangTranslate = ({ lang, short, className }: { lang: string; short?: boolean; className?: string }) => {
-  const translate = TRANSLATE[lang];
+  const translate = (translation as Record<string, { title: string; abr: string; }>)[lang];
   const Icon = ICONS[lang];
-  if (translate && Icon) return <><span>{short ? translate.short : translate.long}</span><Icon height={12} className={className} /></>;
-  if (translate) return <span>{short ? translate.short : translate.long}</span>;
+  if (translate && Icon) return <><span>{short ? translate.abr : translate.title}</span><Icon height={12} className={className} /></>;
+  if (translate) return <span>{short ? translate.abr : translate.title}</span>;
   if (Icon) return <Icon height={12} className={className} />;
   return <span>{(lang || '').toUpperCase()}</span>;
 }
@@ -80,19 +70,19 @@ function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Arra
 
 function Languages({ langs }: { langs: Array<string> | undefined }) {
 
-  const locale = useCurrentLocale(i18nConfig) || "";
+  const localeData = useLocale();
   const currentPathname = usePathname();
 
   return <div className="relative group">
     <button aria-label={'language'} className="flex items-baseline gap-x-1">
-      <LangTranslate lang={locale} short />
+      <LangTranslate lang={localeData.locale} short />
     </button>
     <ul className="absolute top-full right-0 -translate-y-2 transition-all invisible opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 bg-black bg-opacity-60 p-2.5 space-y-4 rounded-sm">
       {
         langs?.map((toLang) => (
           <li key={toLang} className="text-center">
-            <a aria-label={toLang} href={changeLang(currentPathname, toLang, locale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === locale && 'text-gray-600 pointer-events-none')}>
-              <LangTranslate lang={toLang} className={clsx(toLang === locale && 'animate-pulse')} />
+            <a aria-label={toLang} href={changeLang(currentPathname, toLang, localeData)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === localeData.locale && 'text-gray-600 pointer-events-none')}>
+              <LangTranslate lang={toLang} className={clsx(toLang === localeData.locale && 'animate-pulse')} />
             </a>
           </li>
         ))
@@ -104,13 +94,14 @@ function Languages({ langs }: { langs: Array<string> | undefined }) {
 function Header({ logo, navigation, langs }: { logo: AssetType | undefined; navigation: Array<CTAType> | undefined, langs: Array<string> }) {
 
   const scrlDetect = useScrollDirection();
+  const { locale, isDefault } = useLocale();
 
   return <header className={clsx("fixed top-0 z-20 w-full bg-transparent transition-all", {
     'backdrop-blur': scrlDetect.percent > 0.01,
   })}>
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
-        <a aria-label={'home page'} href={`concatPaths("/", env?.LANG)`}>
+        <a aria-label={'home page'} href={`/${isDefault ? "" : locale}`}>
           <Asset asset={logo} asBackground />
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
