@@ -22,12 +22,13 @@ async function getDirections(ids: Array<string> | undefined) {
 
 async function Directions({ headline, anchor, divisions, body }: SectionType) {
 
-  const directions: Array<DirectionType> = await getDirections(divisions?.map(({ _id }) => _id));
+  const ids = divisions?.map(({ _id }) => _id) || [];
+  const directions = (await getDirections(ids)).sort((a, b) => ids.indexOf(a._id) - ids.indexOf(b._id));;
 
   return <Article effect={{ x: 'left', y: 'center' }} anchor={anchor?.tag}>
     <Section animate="b-t">
       <Headline headline={headline}>
-        <RenderHTML value={body} />
+        <RenderHTML body={body} />
       </Headline>
       {directions?.length > 0 && <ClientWrapper directions={directions} />}
     </Section>

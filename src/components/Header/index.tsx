@@ -8,7 +8,8 @@ import { AssetType, CTAType } from "@/models/_default";
 import CTA from "../elements/CTA";
 import { translation } from "../../../i18n.config";
 import { useLocale } from "../hooks/useLocale";
-import { joinPath } from "@/utils/str";
+
+const getTranslation = (lang: string) => (translation as Record<string, { title: string; abr: string; }>)[lang];
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -42,7 +43,7 @@ function changeLang(pathname: string, toLang: string, { locale, defaultLocale }:
 }
 
 const LangTranslate = ({ lang, short, className }: { lang: string; short?: boolean; className?: string }) => {
-  const translate = (translation as Record<string, { title: string; abr: string; }>)[lang];
+  const translate = getTranslation(lang);
   const Icon = ICONS[lang];
   if (translate && Icon) return <><span>{short ? translate.abr : translate.title}</span><Icon height={12} className={className} /></>;
   if (translate) return <span>{short ? translate.abr : translate.title}</span>;
@@ -74,18 +75,22 @@ function Languages({ langs }: { langs: Array<string> | undefined }) {
   const currentPathname = usePathname();
 
   return <div className="relative group">
-    <button aria-label={'language'} className="flex items-baseline gap-x-1">
+    <button name="language" aria-label={getTranslation(localeData.locale)?.abr || localeData.locale} className="flex items-baseline gap-x-1">
       <LangTranslate lang={localeData.locale} short />
     </button>
     <ul className="absolute top-full right-0 -translate-y-2 transition-all invisible opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 bg-black bg-opacity-60 p-2.5 space-y-4 rounded-sm">
       {
-        langs?.map((toLang) => (
-          <li key={toLang} className="text-center">
-            <a aria-label={toLang} href={changeLang(currentPathname, toLang, localeData)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === localeData.locale && 'text-gray-600 pointer-events-none')}>
+        langs?.map((toLang) => {
+          const newHref = changeLang(currentPathname, toLang, localeData);
+          const className = clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === localeData.locale && 'text-gray-600 pointer-events-none');
+          return <li key={toLang} className="text-center">
+            {newHref ? <a aria-label={toLang} href={newHref} className={className}>
+              <LangTranslate lang={toLang} />
+            </a> : <span className={className}>
               <LangTranslate lang={toLang} className={clsx(toLang === localeData.locale && 'animate-pulse')} />
-            </a>
-          </li>
-        ))
+            </span>}
+          </li>;
+        })
       }
     </ul>
   </div>
@@ -102,7 +107,7 @@ function Header({ logo, navigation, langs }: { logo: AssetType | undefined; navi
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
         <a aria-label={'home page'} href={`/${isDefault ? "" : locale}`}>
-          <Asset asset={logo} asBackground />
+          <Asset asset={logo} alt="home page"/>
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
           <div className="block md:hidden">

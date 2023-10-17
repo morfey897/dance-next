@@ -29,7 +29,7 @@ function DirectionItem({ item, index, activePrev, activeCur, children, ...props 
       'max-h-0 duration-300': activePrev === item._id,
       'mt-4 max-h-[500px] duration-500': activeCur === item._id,
     })} >
-      <RenderHTML value={item.body} />
+      <RenderHTML body={item.body} />
     </div>
   </div>);
 }

@@ -1,33 +1,63 @@
-import { AssetType, ImageType } from "@/models/_default";
+import { AssetType } from "@/models/_default";
 import { useMemo } from "react";
-import Picture from './Picture';
-import { buildAsset } from "@/lib/sanity";
+import { buildAsset, parseSize } from "@/lib/sanity";
 
-function Asset({ asset, alt: alternative, src: resource, width: w, height: h, quality, asBackground, inline, ...props }: { asset?: AssetType; asBackground?: boolean; quality?: number; inline?: boolean; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
+const MOBILE_WIDTH = 640;
 
-  const rest = useMemo<ImageType>(() => {
+type ImgType = {
+  src: string | undefined;
+  width: string | number | undefined;
+  height: string | number | undefined;
+};
 
-    if (asset) {
-      const { src, alt, width, height } = buildAsset(asset);
+type SourceType = {
+  type?: string | undefined;
+  media: string;
+  srcSet: string;
+}
 
-      return {
-        src: src,
-        alt: alt ?? alternative,
-        width: width || (typeof w === 'string' ? parseInt(w) : 0),
-        height: height || (typeof h === 'string' ? parseInt(h) : 0),
-      }
-    }
+function Asset({ asset, alt: alternative, src: resource, width: tagWidth, height: tagHeight, quality, ...props }: { asset?: AssetType; quality?: number; } & React.ImgHTMLAttributes<HTMLPictureElement>) {
 
+  const pictureProps = useMemo<{ imgProps: ImgType | undefined; sources: Array<SourceType> } | undefined>(() => {
+    if (!asset) return
+    const parsedWidth = typeof tagWidth === 'string' ? parseInt(tagWidth as string) : tagWidth;
+    const parsedHeight = typeof tagHeight === 'string' ? parseInt(tagHeight as string) : tagHeight;
+    const url = buildAsset(asset, { q: quality, w: parsedWidth, h: parsedHeight });
+    const { width, height } = parseSize(asset);
     return {
-      src: resource || '',
-      alt: alternative || '',
-      width: typeof w === 'string' ? parseInt(w) : 0,
-      height: typeof h === 'string' ? parseInt(h) : 0,
+      sources: [
+        {
+          srcSet: buildAsset(asset, { q: quality, fm: 'webp', w: MOBILE_WIDTH }),
+          type: 'image/webp',
+          media: `(max-width: ${MOBILE_WIDTH - 1}px)`
+        },
+        {
+          srcSet: buildAsset(asset, { q: quality, w: MOBILE_WIDTH }),
+          media: `(max-width: ${MOBILE_WIDTH - 1}px)`
+        },
+        {
+          srcSet: buildAsset(asset, { q: quality, fm: 'webp' }),
+          type: 'image/webp',
+          media: `(min-width: ${MOBILE_WIDTH}px)`
+        },
+        {
+          srcSet: buildAsset(asset, { q: quality }),
+          media: `(min-width: ${MOBILE_WIDTH}px)`
+        },
+      ],
+      imgProps: {
+        src: url,
+        width: parsedWidth || width,
+        height: parsedHeight || height,
+      },
+
     }
+  }, [asset]);
 
-  }, [asset, alternative, resource, w, h]);
-
-  return <Picture {...props} {...rest} showLoadingState={!asBackground} inline={inline} />;
+  return <picture {...props}>
+    {pictureProps?.sources.map((props) => <source key={props.srcSet} {...props} />)}
+    <img alt={asset?.alt ?? alternative} {...pictureProps?.imgProps} loading={'lazy'} decoding="async" />
+  </picture>;
 }
 
 export default Asset;

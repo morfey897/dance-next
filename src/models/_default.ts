@@ -5,8 +5,13 @@ export type DefaultProps = {
 }
 
 export const GROQ_TAG = 'tag';
+export const GROQ_TAG_EXTEND = `
+tag,
+"description": coalesce(description[$locale], description[$defaultLocale]),
+`;
 export type TagType = {
   tag: string;
+  description?: string;
 }
 
 export const GROQ_CTA = `
@@ -37,13 +42,6 @@ export type AssetType = {
   alt: string;
   tags?: Array<TagType>;
   image: SanityImageSource;
-}
-
-export type ImageType = {
-  src: string | undefined;
-  alt: string | undefined;
-  width: number | undefined;
-  height: number | undefined;
 }
 
 export const GROQ_WRAPPER = 'code';

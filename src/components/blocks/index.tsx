@@ -7,13 +7,26 @@ import About from "./About";
 import Directions from "./Directions";
 import Gallery from "./Gallery";
 import Contacts from "./Contacts";
+import Prices from "./Prices";
+import Schedule from "./Schedule";
+
+enum SectionEnum {
+  ABOUT = 'about',
+  DIRECTIONS = 'directions',
+  GALLARY = 'gallery',
+  CONTACTS = 'contacts',
+  PRICES = 'prices',
+  SCHEDULE = 'schedule',
+};
 
 const MAP: Record<string, React.FC<SectionType & { settings: SettingsType }>> = {
-  "about": About,
-  "directions": Directions,
-  'gallery': Gallery,
-  'contacts': Contacts,
-}
+  [SectionEnum.ABOUT]: About,
+  [SectionEnum.DIRECTIONS]: Directions,
+  [SectionEnum.GALLARY]: Gallery,
+  [SectionEnum.CONTACTS]: Contacts,
+  [SectionEnum.PRICES]: Prices,
+  [SectionEnum.SCHEDULE]: Schedule,
+};
 
 function NoneComponent() {
   return null;

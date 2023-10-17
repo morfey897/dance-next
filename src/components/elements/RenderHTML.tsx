@@ -1,11 +1,12 @@
 import { PortableText } from '@portabletext/react'
 import { PortableTextBlock } from '@portabletext/types';
 import Asset from './Asset';
+import clsx from 'clsx';
 
-function RenderHTML({ value }: { value?: PortableTextBlock }) {
-  return value ? <div className='block-content'>
+function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } & React.HTMLProps<HTMLDivElement>) {
+  return body ? <div className={clsx('block-content', className)} {...rest}>
     <PortableText
-      value={value}
+      value={body}
       components={{
         types: {
           image: ({ value }) => <Asset asset={{

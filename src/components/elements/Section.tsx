@@ -1,11 +1,16 @@
 "use client";
 import clsx from "clsx";
 import { useInView } from "react-intersection-observer";
+import { useMedia } from "react-use";
+
+const MOBILE_WIDTH = 640;
 
 function Section({ className, children, render, animate, ...rest }: { animate?: 'b-t' | 'l-r' | 'r-l' } & { render?: ((inView: boolean) => JSX.Element) } & React.HTMLProps<HTMLElement>) {
 
+  const isWide = useMedia(`(min-width: ${MOBILE_WIDTH}px)`, false);
+
   const { ref, inView } = useInView({
-    threshold: 0.1,
+    threshold: isWide ? 0.1 : 0,
     delay: 100,
     triggerOnce: true,
     initialInView: true,

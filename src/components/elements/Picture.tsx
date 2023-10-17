@@ -1,7 +1,6 @@
 "use client";
-import { ImageType } from "@/models/_default";
 import clsx from "clsx";
-import NextImage from 'next/image';
+import Image from 'next/image';
 import { useState } from "react";
 
 const LoadingIndicator = ({ loaded, width }: { loaded: boolean; width: number | undefined; }) => (
@@ -12,23 +11,24 @@ const LoadingIndicator = ({ loaded, width }: { loaded: boolean; width: number | 
   </div>
 );
 
-function Picture({ alt, src, width, height, inline, showLoadingState, className, ...props }: { showLoadingState?: boolean; inline?: boolean } & ImageType & React.HTMLAttributes<HTMLElement>) {
+function Picture({ alt, src, width, height, quality, inline, lazyload, className, ...props }: { lazyload?: boolean; inline?: boolean; quality?: number; } & React.ImgHTMLAttributes<HTMLImageElement>) {
 
   const [loaded, setLoaded] = useState(false);
 
   return (
     <picture className={clsx('relative', className)} {...props}>
-      {!!src && <NextImage
+      {!!src && <Image
         src={src}
         alt={alt || ''}
-        width={width}
-        height={height}
-        loading={showLoadingState ? 'lazy' : 'eager'}
+        width={typeof width === 'string' ? parseInt(width) : width}
+        height={typeof height === 'string' ? parseInt(height) : height}
+        quality={quality}
+        loading={lazyload ? 'lazy' : 'eager'}
         onLoadingComplete={() => {
           setLoaded(true);
         }}
       />}
-      {!!src && (showLoadingState === true || typeof showLoadingState === 'undefined') && <LoadingIndicator loaded={loaded} width={inline ? width : undefined} />}
+      {!!src && (lazyload === true || typeof lazyload === 'undefined') && <LoadingIndicator loaded={loaded} width={inline && typeof width === 'string' ? parseInt(width) : undefined} />}
     </picture>
   );
 }

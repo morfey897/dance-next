@@ -2,11 +2,10 @@
 
 import clsx from "clsx";
 import DirectionItem from "./Item";
-import Picture from "@/components/elements/Picture";
+import Asset from "@/components/elements/Asset";
 
 import { DirectionType } from "@/models/direction";
 import { useEffect, useState } from "react";
-import { AssetType, ImageType } from "@/models/_default";
 import Section from "@/components/elements/Section";
 import { buildAsset } from "@/lib/sanity";
 
@@ -37,15 +36,13 @@ function ClientWrapper({ directions }: { directions: Array<DirectionType>; }) {
     <div className="relative grow w-full mt-4 lg:mt-0 min-h-[217px] md:min-h-[450px] lg:min-h-auto overflow-hidden">
       <Section animate="r-l">
         {directions?.map((item) => {
-          const image: ImageType = buildAsset((item.images || [])[0]);
-          return <Picture key={`image-${item._id}`} className={clsx("!absolute top-0 transition-opacity duration-500 opacity-0 w-full object-contain lg:object-cover h-[217px] md:h-[450px] lg:h-auto", {
+          return <Asset key={`image-${item._id}`} className={clsx("!absolute top-0 transition-opacity duration-500 opacity-0 w-full object-contain lg:object-cover h-[230px] md:h-[450px] lg:h-auto", {
             '!opacity-0': active.prev === item._id,
             '!opacity-100': active.cur === item._id,
           })}
-            src={active.prev === item._id || active.cur === item._id ? image?.src : undefined}
-            alt={image?.alt || item.headline}
-            width={image?.width}
-            height={image?.height} />
+            asset={item.images && item.images[0]}
+            alt={item.headline}
+          />
         })}
       </Section>
     </div>

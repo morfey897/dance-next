@@ -9,6 +9,7 @@ import Header from "@/components/Header";
 import { findImage } from "@/utils/filter";
 import { CTAType } from "@/models/_default";
 import Footer from "@/components/Footer";
+import clsx from 'clsx';
 
 export const SLUG = '/';
 
@@ -47,7 +48,7 @@ export default async function Home() {
 
   return (<>
     <Header logo={findImage(settings?.images, 'head')} navigation={nav} langs={['uk', 'en']} />
-    <main>
+    <main className={clsx('overflow-hidden')}>
       <Factory sections={page.sections} settings={settings} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getJSON_LD(settings)) }} />
     </main>
