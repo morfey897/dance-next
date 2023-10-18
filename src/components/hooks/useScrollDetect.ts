@@ -31,7 +31,7 @@ export function useScrollDirection(): ScrollDirectionHookResult {
         window.removeEventListener('scroll', onScroll);
       };
     }
-  }, [])
+  }, [onScroll])
 
   return result;
 }

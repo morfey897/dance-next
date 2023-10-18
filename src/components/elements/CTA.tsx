@@ -27,7 +27,7 @@ function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { 
     return {
       href: "#"
     }
-  }, [cta]);
+  }, [cta, isDefault, locale]);
 
   return <a aria-label={cta?.title || ""} {...rest} {...props}>
     {!!children ? children : cta?.title}

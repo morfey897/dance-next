@@ -65,10 +65,11 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
     setScales(calculateScale(ref.current));
   }, 150), []);
 
+  /* eslint-disable-next-line react-hooks/exhaustive-deps */
   const onResize = useMemo(() => throttle(() => {
     smoothScroll(startAt ?? 0, ref.current, 'auto');
     setScales(calculateScale(ref.current));
-  }, 300), []);
+  }, 300), []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const onSelectPage = useCallback((page: number) => {
     smoothScroll(page, ref.current);
@@ -76,7 +77,7 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
 
   useEffect(() => {
     onResize();
-  }, [items]);
+  }, [items, onResize]);
 
   useEffect(() => {
     window.addEventListener('resize', onResize);
@@ -85,7 +86,7 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
       onResize.cancel();
       window.removeEventListener('resize', onResize);
     }
-  }, []);
+  }, [onScroll, onResize]);
 
   useEffect(() => {
     const changeUID = setInterval(() => {
@@ -100,7 +101,7 @@ function Swiper<T>({ items, Controls, Item, autoScroll, startAt, className, ...p
     return () => {
       clearInterval(changeUID);
     }
-  }, [inView, activePage, pages]);
+  }, [inView, activePage, pages, autoScroll, onSelectPage]);
 
   return <div className={clsx("relative", className)} {...props} ref={(autoScroll || 0) > 0 ? inViewRef : undefined}>
     <ul

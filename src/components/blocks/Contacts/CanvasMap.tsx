@@ -22,7 +22,7 @@ function CanvasMap({ center, zoom, className, ...props }: { center: google.maps.
       map: map,
       labelContent: ".",
     })
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   return <div className={className} ref={ref} {...props} />;
 }
