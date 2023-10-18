@@ -14,7 +14,7 @@ function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } &
             caption: '',
             alt: '',
             image: value,
-          }} inline />
+          }} />
         },
         marks: {
           strong: ({ children }) => (<strong>

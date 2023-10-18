@@ -16,7 +16,7 @@ async function getDirections(ids: Array<string> | undefined) {
     queryDirections({
       ids
     }),
-    { cache: 'force-cache' }
+    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
   );
 }
 

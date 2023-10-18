@@ -11,7 +11,7 @@ import { CTAType } from "@/models/_default";
 import Footer from "@/components/Footer";
 import clsx from 'clsx';
 
-export const SLUG = '/';
+const SLUG = '/';
 
 async function getPage() {
   return await request<{ page: PageType; settings: SettingsType }>(
@@ -19,7 +19,7 @@ async function getPage() {
       page: queryPage({ slug: SLUG }),
       settings: querySettings({}),
     },
-    { cache: 'force-cache' }
+    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
   );
 }
 

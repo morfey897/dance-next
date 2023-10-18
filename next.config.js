@@ -6,7 +6,6 @@ const i18nConfig = require('./i18n.config');
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  experimental: { optimizeCss: true },
   images: {
     remotePatterns: [
       { hostname: 'cdn.sanity.io' }

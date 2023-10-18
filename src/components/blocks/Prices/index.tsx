@@ -18,7 +18,7 @@ async function getPrices(ids: Array<string> | undefined) {
     queryPrices({
       ids
     }),
-    // { cache: 'force-cache' }
+    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
   );
 }
 

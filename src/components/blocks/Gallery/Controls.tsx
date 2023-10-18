@@ -12,7 +12,7 @@ export type ControlsType = {
   onSelectPage: (page: number) => void;
 }
 
-const NextPageButton = memo(({ className, name, ...props }: { name: 'prev' | 'next' } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+const NextPageButton = ({ className, name, ...props }: { name: 'prev' | 'next' } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <ArrowButton
     name={name}
     className={clsx("hidden md:flex absolute top-[calc(50%-70px/2)]",
@@ -27,7 +27,7 @@ const NextPageButton = memo(({ className, name, ...props }: { name: 'prev' | 'ne
       },
       className
     )} {...props} />
-));
+);
 
 function Controls({ onSelectPage, pages, active }: ControlsType) {
 

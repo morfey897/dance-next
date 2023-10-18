@@ -34,9 +34,10 @@ function NoneComponent() {
 
 function Factory({ sections, settings }: { sections: SectionType[]; settings: SettingsType; }) {
 
-  return sections.map(section => {
-    const Component = MAP[section?.wrapper?.code] || NoneComponent;
-    return <Component {...section} settings={settings} />
+  return sections.map((section, index) => {
+    const key = section?.wrapper?.code;
+    const Component = MAP[key] || NoneComponent;
+    return <Component key={key || `undefined-${index}`} {...section} settings={settings} />
   });
 }
 

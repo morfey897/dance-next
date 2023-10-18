@@ -52,7 +52,7 @@ function Asset({ asset, alt: alternative, src: resource, width: tagWidth, height
       },
 
     }
-  }, [asset]);
+  }, [asset, tagWidth, tagHeight, quality]);
 
   return <picture {...props}>
     {pictureProps?.sources.map((props) => <source key={props.srcSet} {...props} />)}
