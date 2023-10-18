@@ -1,42 +1,42 @@
-// app/not-found.tsx
-import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export default function NotFound() {
-  return (
-    <div className='w-4/5 mx-auto mt-20 flex flex-col justify-center items-center space-y-4'>
-      <h1 className='text-4xl font-semibold'>404 - Page Not Found</h1>
-      <h4 className='py-10 text-lg text-red-500 font-semibold capitalize'>
-        The Nothingness and Emptiness is here...
-      </h4>
-      <p>
-        Use the search box or the links below to explore our amazing
-        application
-      </p>
-      <input
-        className='w-4/5 px-6 py-3 border border-gray-400 rounded-full'
-        type='search'
-        placeholder='Just a dummy search box...'
-      />
-      <div className='space-x-4'>
-        <Link
-          className='underline text-blue-600 hover:text-red-500 duration-300'
-          href='/'
-        >
-          Homepage
-        </Link>
-        <Link
-          className='underline text-blue-600 hover:text-red-500 duration-300'
-          href='/latest'
-        >
-          Latest Products
-        </Link>
-        <Link
-          className='underline text-blue-600 hover:text-red-500 duration-300'
-          href='/contact'
-        >
-          Contact Us
-        </Link>
-      </div>
-    </div>
+import { request } from "@/lib/sanity.server";
+import { PageType, query as queryPage } from "@/models/page";
+import { SettingsType, query as querySettings } from "@/models/settings";
+import { getMetadata } from "@/utils/seo";
+import Header from "@/components/Header";
+import Factory from '@/components/blocks';
+import { findImage } from "@/utils/filter";
+import Footer from "@/components/Footer";
+import clsx from 'clsx';
+
+const SLUG = '/404';
+
+async function getPage() {
+  return await request<{ page: PageType; settings: SettingsType }>(
+    {
+      page: queryPage({ slug: SLUG }),
+      settings: querySettings({}),
+    },
+    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+
+  const { page, settings } = await getPage();
+  return getMetadata(page, settings);
+}
+
+export default async function Page() {
+  const { page, settings } = await getPage();
+
+  return (<>
+    <Header logo={findImage(settings?.images, 'head')} navigation={[]} langs={['uk', 'en']} />
+    <main className={clsx('overflow-hidden')}>
+      <Factory sections={page.sections} settings={settings} />
+    </main >
+    <Footer navigation={[]} settings={settings} />
+  </>
+  )
 }

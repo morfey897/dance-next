@@ -1,7 +1,7 @@
 "use client";
 
 import { CTAType } from "@/models/_default";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useLocale } from "@/components/hooks/useLocale";
 import { joinPath } from "@/utils/str";
 
@@ -29,9 +29,9 @@ function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { 
     }
   }, [cta, isDefault, locale]);
 
-  return <a aria-label={cta?.title || ""} {...rest} {...props}>
+  return cta ? <a aria-label={cta?.title || ""} {...rest} {...props}>
     {!!children ? children : cta?.title}
-  </a>
+  </a> : null;
 }
 
-export default CTA;
+export default memo(CTA);

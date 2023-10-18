@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return getMetadata(page, settings);
 }
 
-export default async function Home() {
+export default async function Page() {
   const { page, settings } = await getPage();
 
   const nav: Array<CTAType> = page.sections

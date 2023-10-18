@@ -9,6 +9,7 @@ import Gallery from "./Gallery";
 import Contacts from "./Contacts";
 import Prices from "./Prices";
 import Schedule from "./Schedule";
+import Default from "./_Default";
 
 enum SectionEnum {
   ABOUT = 'about',
@@ -28,15 +29,11 @@ const MAP: Record<string, React.FC<SectionType & { settings: SettingsType }>> = 
   [SectionEnum.SCHEDULE]: Schedule,
 };
 
-function NoneComponent() {
-  return null;
-}
-
 function Factory({ sections, settings }: { sections: SectionType[]; settings: SettingsType; }) {
 
   return sections.map((section, index) => {
     const key = section?.wrapper?.code;
-    const Component = MAP[key] || NoneComponent;
+    const Component = MAP[key] || Default;
     return <Component key={key || `undefined-${index}`} {...section} settings={settings} />
   });
 }
