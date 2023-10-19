@@ -10,12 +10,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@googleapis/calendar": "^9.3.2",
     "@googlemaps/markerwithlabel": "^2.0.23",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@portabletext/react": "^3.0.7",
     "@sanity/client": "^6.4.9",
     "@sanity/image-url": "^1.0.2",
     "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
+    "google-auth-library": "^9.1.0",
     "lodash": "^4.17.21",
     "next": "13.4.19",
     "next-i18n-router": "^3.1.1",
@@ -23,6 +26,8 @@
     "react-dom": "18.2.0",
     "react-intersection-observer": "^9.5.2",
     "react-use": "^17.4.0",
+    "rrule": "^2.7.2",
+    "swr": "^2.2.4",
     "tailwindcss": "^3.3.3",
     "tailwindcss-hyphens": "^0.1.0"
   },
@@ -34,6 +39,7 @@
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
     "core-js": "^3.32.2",
+    "encoding": "^0.1.13",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "postcss": "8.4.28",

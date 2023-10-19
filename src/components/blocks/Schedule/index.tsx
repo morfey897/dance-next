@@ -1,12 +1,9 @@
 import Headline from "@/components/elements/Headline";
 import Article from "@/components/elements/Article";
 import Section from "@/components/elements/Section";
-// import Swiper from "./Swiper";
-// import Controls from "./Controls";
-// import Item from "./Item";
-import RenderHTML from "../../elements/RenderHTML";
+import RenderHTML from "@/components/elements/RenderHTML";
+import ClientWrapper from "./ClientWrapper";
 import { SectionType } from "@/models/page";
-import { AssetType } from "@/models/_default";
 
 function Schedule({ headline, anchor, body }: SectionType) {
 
@@ -16,9 +13,9 @@ function Schedule({ headline, anchor, body }: SectionType) {
         <RenderHTML body={body} />
       </Headline>
     </Section>
-    {/* <Section animate="r-l">
-      <Swiper<AssetType> items={images} Controls={Controls} Item={Item} autoScroll={5} startAt={1} />
-    </Section> */}
+    <Section animate="b-t">
+      <ClientWrapper />
+    </Section>
   </Article >;
 }
 
