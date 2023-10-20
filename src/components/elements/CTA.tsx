@@ -4,17 +4,18 @@ import { CTAType } from "@/models/_default";
 import { memo, useMemo } from "react";
 import { useLocale } from "@/components/hooks/useLocale";
 import { joinPath } from "@/utils/str";
+import Link from "next/link";
 
-function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { cta?: CTAType }) {
+function CTA({ cta, children, ...rest }: Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'> & { cta?: CTAType }) {
 
-  const { locale, isDefault } = useLocale();
+  const locale = useLocale();
 
   const props = useMemo<{ href: string; rel?: string }>(() => {
     if (cta?.internalUrl) {
       const slug = cta.internalUrl?.page?.slug || "/";
       const anchor = cta.internalUrl?.anchor?.tag;
       return {
-        href: joinPath("#", joinPath("/", "/", (isDefault ? undefined : locale), slug), anchor)
+        href: joinPath("#", joinPath("/", "/", locale, slug), anchor)
       }
     }
 
@@ -27,11 +28,10 @@ function CTA({ cta, children, ...rest }: React.HTMLProps<HTMLAnchorElement> & { 
     return {
       href: "#"
     }
-  }, [cta, isDefault, locale]);
-
-  return cta ? <a aria-label={cta?.title || ""} {...rest} {...props}>
+  }, [cta, locale]);
+  return cta ? <Link aria-label={cta?.title || ""} {...props} {...rest}>
     {!!children ? children : cta?.title}
-  </a> : null;
+  </Link> : null;
 }
 
 export default memo(CTA);

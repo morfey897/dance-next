@@ -2,6 +2,7 @@ import { PortableText } from '@portabletext/react'
 import { PortableTextBlock } from '@portabletext/types';
 import Asset from './Asset';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } & React.HTMLProps<HTMLDivElement>) {
   return body ? <div className={clsx('block-content', className)} {...rest}>
@@ -24,9 +25,9 @@ function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } &
             {children}
           </em>),
           link: ({ children, value }) => (
-            <a href={value.href} {...(!value.href.startsWith('/') ? { rel: 'noreferrer noopener', target: "_blank" } : {})} className='underline text-pink-400 hover:text-slate-300'>
+            <Link href={value.href} {...(!value.href.startsWith('/') ? { rel: 'noreferrer noopener', target: "_blank" } : {})} className='underline text-pink-400 hover:text-slate-300'>
               {children}
-            </a>
+            </Link>
           ),
         }
       }}

@@ -9,7 +9,6 @@ import Grid from "./Grid";
 import type { GridState, DateAction, EventType } from "./types";
 import useSWR from 'swr';
 import { toDate } from "@/utils/date";
-import translation from "./translation";
 
 import { useInView } from 'react-intersection-observer';
 import { useLocale } from "@/components/hooks/useLocale";
@@ -92,7 +91,7 @@ function InnerGrid() {
 
   const locale = useLocale();
 
-  const [state, dispatch] = useReducer(reducer, { lang: locale.locale }, init);
+  const [state, dispatch] = useReducer(reducer, { lang: locale }, init);
   const { data: events, error, isLoading } = useSWR(`/api/events?start=${toDate(state.dates[0])}&end=${toDate(state.dates[state.dates.length - 1])}`, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -111,8 +110,6 @@ function InnerGrid() {
 }
 
 function ClientWrapper() {
-
-  const locale = useLocale();
 
   const { ref, inView } = useInView({
     triggerOnce: true,

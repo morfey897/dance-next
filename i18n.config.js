@@ -1,10 +1,12 @@
 const i18nConfig = {
   locales: ['uk', 'en', 'ru'],
   defaultLocale: 'uk',
+  prefixDefault: false,
+  localeCookie: 'NEXT_LOCALE',
   translation: {
     uk: { title: 'Українська', abr: 'Укр', },
     en: { title: 'English', abr: 'Eng' },
-    ru: { title: 'Русский', abr: 'Ру' },
+    ru: { title: 'Русский', abr: 'Язык', hide: true },
   },
   currencies: {
     UAH: {

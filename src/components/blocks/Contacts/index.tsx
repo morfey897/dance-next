@@ -8,6 +8,7 @@ import RenderHTML from "@/components/elements/RenderHTML";
 import { SectionType } from "@/models/page";
 import MapSection from "./MapSection";
 import { SettingsType } from "@/models/settings";
+import Link from "next/link";
 
 // address, phones, socials, 
 function Contacts({ headline, images, anchor, body, settings }: { settings: SettingsType } & SectionType) {
@@ -25,7 +26,11 @@ function Contacts({ headline, images, anchor, body, settings }: { settings: Sett
         <Section animate="r-l">
           <div>
             <h2 className="uppercase text-3xl md:text-7xl text-left">{headline}</h2>
-            <a aria-label={addressMap} className="block text-base md:text-3xl mt-10 max-w-screen-md m-auto text-left underline" href={`https://www.google.com/maps/search/?api=1&query=${encodeURI(`${address?.place}`)}`} target="_blank" rel="noreferrer noopener">{addressMap}</a>
+            <Link aria-label={addressMap}
+              className="block text-base md:text-3xl mt-10 max-w-screen-md m-auto text-left underline"
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURI(`${address?.place}`)}`}
+              target="_blank"
+              rel="noreferrer noopener">{addressMap}</Link>
             <div className="text-xs md:text-base mt-5 max-w-screen-md m-auto text-left">
               <RenderHTML body={body} />
             </div>

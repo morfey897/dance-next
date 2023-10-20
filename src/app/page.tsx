@@ -47,7 +47,7 @@ export default async function Page() {
     }))
 
   return (<>
-    <Header logo={findImage(settings?.images, 'head')} navigation={nav} langs={['uk', 'en']} />
+    <Header logo={findImage(settings?.images, 'head')} navigation={nav} />
     <main className={clsx('overflow-hidden')}>
       <Factory sections={page.sections} settings={settings} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getJSON_LD(settings)) }} />

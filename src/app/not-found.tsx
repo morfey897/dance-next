@@ -32,7 +32,7 @@ export default async function Page() {
   const { page, settings } = await getPage();
 
   return (<>
-    <Header logo={findImage(settings?.images, 'head')} navigation={[]} langs={['uk', 'en']} />
+    <Header logo={findImage(settings?.images, 'head')} navigation={[]} />
     <main className={clsx('overflow-hidden')}>
       <Factory sections={page.sections} settings={settings} />
     </main >

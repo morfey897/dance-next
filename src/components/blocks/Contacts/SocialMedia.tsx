@@ -1,5 +1,6 @@
 import { SocialType } from "@/models/settings";
 import { memo } from "react";
+import Link from "next/link";
 
 type IconsType = 'instagram' | 'fb' | 'tiktok' | 'telegram' | 'viber' | 'whatsapp';
 
@@ -12,13 +13,11 @@ const ICONS = {
   'whatsapp': '',
 };
 
-
-
-function SocialMedia({ type, title, link, ...props }: SocialType & React.HTMLProps<HTMLAnchorElement>) {
-  return <a aria-label={type} className="font-medium text-sm md:text-3xl flex gap-x-4 flex-row-reverse lg:flex-row items-baseline justify-center lg:justify-end" href={link} target="_blank" rel="noreferrer noopener" {...props}>
+function SocialMedia({ type, title, link, ...props }: SocialType & Omit<React.HTMLProps<HTMLAnchorElement>, 'ref'>) {
+  return <Link aria-label={type} className="font-medium text-sm md:text-3xl flex gap-x-4 flex-row-reverse lg:flex-row items-baseline justify-center lg:justify-end" href={link} target="_blank" rel="noreferrer noopener" {...props}>
     {title && <span>{title}</span>}
     <span className="inline-block fill-white">{ICONS[type]}</span>
-  </a>;
+  </Link>;
 }
 
 export default memo(SocialMedia);

@@ -1,15 +1,17 @@
 "use client";
 
 import clsx from "clsx";
-import { useScrollDirection } from "../hooks/useScrollDetect";
-import { usePathname } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useScrollDirection } from "@/components/hooks/useScrollDetect";
 import Asset from "@/components/elements/Asset";
 import { AssetType, CTAType } from "@/models/_default";
-import CTA from "../elements/CTA";
-import { translation } from "../../../i18n.config";
-import { useLocale } from "../hooks/useLocale";
+import CTA from "@/components/elements/CTA";
+import { useLocale } from "@/components/hooks/useLocale";
+import { useRealPathname } from "@/components/hooks/useRealPathname";
+import { useCallback } from "react";
+import i18nConfig from "../../../i18n.config";
 
-const getTranslation = (lang: string) => (translation as Record<string, { title: string; abr: string; }>)[lang];
+const translation = (i18nConfig.translation as Record<string, { title: string; abr: string; hide?: boolean; }>);
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -31,24 +33,21 @@ const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> =
         <path fill="#fff" d="m30.4 11 3.4 10.3h10.6l-8.6 6.3 3.3 10.3-8.7-6.4-8.6 6.3L25 27.6l-8.7-6.3h10.9zm60.8 0 3.3 10.3h10.8l-8.7 6.3 3.2 10.3-8.6-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.6zm60.8 0 3.3 10.3H166l-8.6 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.7-6.3h10.8zm60.8 0 3.3 10.3h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.4-10.2-8.8-6.3h10.7zm60.8 0 3.3 10.3h10.7l-8.6 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zm60.8 0 3.3 10.3h10.8l-8.8 6.3 3.4 10.3-8.7-6.4-8.7 6.3 3.4-10.2-8.8-6.3h10.8zM60.8 37l3.3 10.2H75l-8.7 6.2 3.2 10.3-8.5-6.3-8.7 6.3 3.1-10.3-8.4-6.2h10.7zm60.8 0 3.4 10.2h10.7l-8.8 6.2 3.4 10.3-8.7-6.3-8.7 6.3 3.3-10.3-8.7-6.2h10.8zm60.8 0 3.3 10.2h10.8l-8.7 6.2 3.3 10.3-8.7-6.3-8.7 6.3 3.3-10.3-8.6-6.2H179zm60.8 0 3.4 10.2h10.7l-8.8 6.2 3.4 10.3-8.7-6.3-8.6 6.3 3.2-10.3-8.7-6.2H240zm60.8 0 3.3 10.2h10.8l-8.7 6.2 3.3 10.3-8.7-6.3-8.7 6.3 3.3-10.3-8.6-6.2h10.7zM30.4 62.6l3.4 10.4h10.6l-8.6 6.3 3.3 10.2-8.7-6.3-8.6 6.3L25 79.3 16.3 73h10.9zm60.8 0L94.5 73h10.8l-8.7 6.3 3.2 10.2-8.6-6.3-8.7 6.3 3.3-10.3-8.6-6.3h10.6zm60.8 0 3.3 10.3H166l-8.6 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.3-10.3-8.7-6.3h10.8zm60.8 0 3.3 10.3h10.8l-8.7 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.4-10.3-8.8-6.3h10.7zm60.8 0 3.3 10.3h10.7l-8.6 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.3-10.3-8.6-6.3h10.7zm60.8 0 3.3 10.3h10.8l-8.8 6.3 3.4 10.2-8.7-6.3-8.7 6.3 3.4-10.3-8.8-6.3h10.8zM60.8 88.6l3.3 10.2H75l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zm60.8 0 3.4 10.2h10.7l-8.8 6.3 3.4 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.7-6.3h10.8zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3H179zm60.8 0 3.4 10.2h10.7l-8.7 6.3 3.3 10.3-8.7-6.4-8.6 6.3 3.2-10.2-8.7-6.3H240zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zM30.4 114.5l3.4 10.2h10.6l-8.6 6.3 3.3 10.3-8.7-6.4-8.6 6.3L25 131l-8.7-6.3h10.9zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.2 10.2-8.6-6.3-8.7 6.3 3.3-10.2-8.6-6.3h10.6zm60.8 0 3.3 10.2H166l-8.6 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.7-6.3h10.8zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.4-10.2-8.8-6.3h10.7zm60.8 0 3.3 10.2h10.7L279 131l3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zm60.8 0 3.3 10.2h10.8l-8.8 6.3 3.4 10.3-8.7-6.4-8.7 6.3L329 131l-8.8-6.3h10.8zM60.8 140.3l3.3 10.3H75l-8.7 6.2 3.3 10.3-8.7-6.4-8.7 6.4 3.3-10.3-8.6-6.3h10.7zm60.8 0 3.4 10.3h10.7l-8.8 6.2 3.4 10.3-8.7-6.4-8.7 6.4 3.3-10.3-8.7-6.3h10.8zm60.8 0 3.3 10.3h10.8l-8.7 6.2 3.3 10.3-8.7-6.4-8.7 6.4 3.3-10.3-8.6-6.3H179zm60.8 0 3.4 10.3h10.7l-8.7 6.2 3.3 10.3-8.7-6.4-8.6 6.4 3.2-10.3-8.7-6.3H240zm60.8 0 3.3 10.3h10.8l-8.7 6.2 3.3 10.3-8.7-6.4-8.7 6.4 3.3-10.3-8.6-6.3h10.7zM30.4 166.1l3.4 10.3h10.6l-8.6 6.3 3.3 10.1-8.7-6.2-8.6 6.2 3.2-10.2-8.7-6.3h10.9zm60.8 0 3.3 10.3h10.8l-8.7 6.3 3.3 10.1-8.7-6.2-8.7 6.2 3.4-10.2-8.7-6.3h10.6zm60.8 0 3.3 10.3H166l-8.6 6.3 3.3 10.1-8.7-6.2-8.7 6.2 3.3-10.2-8.7-6.3h10.8zm60.8 0 3.3 10.3h10.8l-8.7 6.3 3.3 10.1-8.7-6.2-8.7 6.2 3.4-10.2-8.8-6.3h10.7zm60.8 0 3.3 10.3h10.7l-8.6 6.3 3.3 10.1-8.7-6.2-8.7 6.2 3.3-10.2-8.6-6.3h10.7zm60.8 0 3.3 10.3h10.8l-8.8 6.3 3.4 10.1-8.7-6.2-8.7 6.2 3.4-10.2-8.8-6.3h10.8zM60.8 192l3.3 10.2H75l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zm60.8 0 3.4 10.2h10.7l-8.8 6.3 3.4 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.7-6.3h10.8zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3H179zm60.8 0 3.4 10.2h10.7l-8.7 6.3 3.3 10.3-8.7-6.4-8.6 6.3 3.2-10.2-8.7-6.3H240zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.3-8.7-6.4-8.7 6.3 3.3-10.2-8.6-6.3h10.7zM30.4 217.9l3.4 10.2h10.6l-8.6 6.3 3.3 10.2-8.7-6.3-8.6 6.3 3.2-10.3-8.7-6.3h10.9zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.4-10.3-8.7-6.3h10.6zm60.8 0 3.3 10.2H166l-8.4 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.3-10.3-8.7-6.3h10.8zm60.8 0 3.3 10.2h10.8l-8.7 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.4-10.3-8.8-6.3h10.7zm60.8 0 3.3 10.2h10.7l-8.6 6.3 3.3 10.2-8.7-6.3-8.7 6.3 3.3-10.3-8.6-6.3h10.7zm60.8 0 3.3 10.2h10.8l-8.8 6.3 3.4 10.2-8.7-6.3-8.7 6.3 3.4-10.3-8.8-6.3h10.8z" />
       </g>
     </svg>
-  )
+  ),
+  ru: (props: React.SVGProps<any>) => (
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="white" {...props}>
+      <path d="M0 0h48v48h-48z" fill="none" />
+      <path d="M23.99 4c-11.05 0-19.99 8.95-19.99 20s8.94 20 19.99 20c11.05 0 20.01-8.95 20.01-20s-8.96-20-20.01-20zm13.85 12h-5.9c-.65-2.5-1.56-4.9-2.76-7.12 3.68 1.26 6.74 3.81 8.66 7.12zm-13.84-7.93c1.67 2.4 2.97 5.07 3.82 7.93h-7.64c.85-2.86 2.15-5.53 3.82-7.93zm-15.48 19.93c-.33-1.28-.52-2.62-.52-4s.19-2.72.52-4h6.75c-.16 1.31-.27 2.64-.27 4 0 1.36.11 2.69.28 4h-6.76zm1.63 4h5.9c.65 2.5 1.56 4.9 2.76 7.13-3.68-1.26-6.74-3.82-8.66-7.13zm5.9-16h-5.9c1.92-3.31 4.98-5.87 8.66-7.13-1.2 2.23-2.11 4.63-2.76 7.13zm7.95 23.93c-1.66-2.4-2.96-5.07-3.82-7.93h7.64c-.86 2.86-2.16 5.53-3.82 7.93zm4.68-11.93h-9.36c-.19-1.31-.32-2.64-.32-4 0-1.36.13-2.69.32-4h9.36c.19 1.31.32 2.64.32 4 0 1.36-.13 2.69-.32 4zm.51 11.12c1.2-2.23 2.11-4.62 2.76-7.12h5.9c-1.93 3.31-4.99 5.86-8.66 7.12zm3.53-11.12c.16-1.31.28-2.64.28-4 0-1.36-.11-2.69-.28-4h6.75c.33 1.28.53 2.62.53 4s-.19 2.72-.53 4h-6.75z" />
+    </svg>)
 }
 
-function changeLang(pathname: string, toLang: string, { locale, defaultLocale }: { locale: string; defaultLocale: string }) {
-  if (toLang === locale) return;
-  if (locale === defaultLocale) return `/${toLang}${pathname}`;
-  pathname = pathname.replace(`/${locale}`, "");
-  if (toLang === defaultLocale) return pathname;
-  return `/${toLang}${pathname}`;
-}
-
-const LangTranslate = ({ lang, short, className }: { lang: string; short?: boolean; className?: string }) => {
-  const translate = getTranslation(lang);
+const LangTranslate = ({ lang, short, ...props }: { lang: string; short?: boolean; } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+  const translate = translation[lang];
   const Icon = ICONS[lang];
-  if (translate && Icon) return <><span>{short ? translate.abr : translate.title}</span><Icon height={12} className={className} /></>;
-  if (translate) return <span>{short ? translate.abr : translate.title}</span>;
-  if (Icon) return <Icon height={12} className={className} />;
-  return <span>{(lang || '').toUpperCase()}</span>;
+  const label = (short ? translate?.abr : translate?.title) || lang;
+  return <button aria-label={label} {...props}>
+    {label} {!!Icon && <Icon height={12} />}
+  </button>;
 }
 
 function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Array<CTAType> | undefined }) {
@@ -69,45 +68,57 @@ function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Arra
   </ul> : null;
 }
 
-function Languages({ langs }: { langs: Array<string> | undefined }) {
+function Languages() {
 
-  const localeData = useLocale();
-  const currentPathname = usePathname();
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = useRealPathname();
+
+  const onChange = useCallback((newLocale: string) => {
+    // set cookie for next-i18n-router
+    const days = 30;
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    const expires = '; expires=' + date.toUTCString();
+    document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
+
+    if (locale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault) {
+      router.push(`/${newLocale}${pathname}`);
+    } else {
+      router.push(pathname.replace(`/${locale}`, `/${newLocale}`));
+    }
+
+    router.refresh();
+  }, []);
 
   return <div className="relative group">
-    <button name="language" aria-label={getTranslation(localeData.locale)?.abr || localeData.locale} className="flex items-baseline gap-x-1">
-      <LangTranslate lang={localeData.locale} short />
-    </button>
+    <LangTranslate name="language" lang={locale} short className="flex items-baseline gap-x-1" />
     <ul className="absolute top-full right-0 -translate-y-2 transition-all invisible opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 bg-black bg-opacity-60 p-2.5 space-y-4 rounded-sm">
       {
-        langs?.map((toLang) => {
-          const newHref = changeLang(currentPathname, toLang, localeData);
-          const className = clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === localeData.locale && 'text-gray-600 pointer-events-none');
-          return <li key={toLang} className="text-center">
-            {newHref ? <a aria-label={toLang} href={newHref} className={className}>
-              <LangTranslate lang={toLang} />
-            </a> : <span className={className}>
-              <LangTranslate lang={toLang} className={clsx(toLang === localeData.locale && 'animate-pulse')} />
-            </span>}
-          </li>;
-        })
+        i18nConfig.locales.map((toLang) => (
+          translation[toLang].hide ? null : <li key={toLang} className="text-center">
+            <LangTranslate lang={toLang}
+              onClick={() => onChange(toLang)}
+              className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === locale && 'text-gray-600 pointer-events-none')} />
+          </li>
+        ))
       }
     </ul>
   </div>
 }
 
-function Header({ logo, navigation, langs }: { logo: AssetType | undefined; navigation: Array<CTAType> | undefined, langs: Array<string> }) {
+function Header({ logo, navigation }: { logo: AssetType | undefined; navigation: Array<CTAType> | undefined }) {
 
   const scrlDetect = useScrollDirection();
-  const { locale, isDefault } = useLocale();
+  const locale = useLocale();
 
   return <header className={clsx("fixed top-0 z-20 w-full bg-transparent transition-all", {
     'backdrop-blur': scrlDetect.percent > 0.01,
   })}>
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
-        <a aria-label={'home page'} href={`/${isDefault ? "" : locale}`}>
-          <Asset asset={logo} alt="home page"/>
+        <a aria-label={'home page'} href={`/${locale}`}>
+          <Asset asset={logo} alt="home page" />
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
           <div className="block md:hidden">
@@ -123,7 +134,7 @@ function Header({ logo, navigation, langs }: { logo: AssetType | undefined; navi
           <div className="hidden md:block">
             <Navigation navigation={navigation} />
           </div>
-          <Languages langs={langs} />
+          <Languages />
         </div>
       </nav>
     </div>
