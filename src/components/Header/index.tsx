@@ -1,7 +1,6 @@
 "use client";
 
 import clsx from "clsx";
-import { useRouter } from "next/navigation";
 import { useScrollDirection } from "@/components/hooks/useScrollDetect";
 import Asset from "@/components/elements/Asset";
 import { AssetType, CTAType } from "@/models/_default";
@@ -71,7 +70,6 @@ function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Arra
 function Languages() {
 
   const locale = useLocale();
-  const router = useRouter();
   const pathname = useRealPathname();
 
   const onChange = useCallback((newLocale: string) => {
@@ -82,13 +80,9 @@ function Languages() {
     const expires = '; expires=' + date.toUTCString();
     document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
 
-    if (locale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault) {
-      router.push(`/${newLocale}${pathname}`);
-    } else {
-      router.push(pathname.replace(`/${locale}`, `/${newLocale}`));
-    }
+    const newHref = locale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault ? `/${newLocale}${pathname}` : pathname.replace(`/${locale}`, `/${newLocale}`);
 
-    router.refresh();
+    window.location.href = newHref;
   }, []);
 
   return <div className="relative group">
