@@ -4,12 +4,12 @@ import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  const response = i18nRouter(request, i18nConfig);
-  const pathname = request.nextUrl.pathname;
-  const currentLocale = response.headers.get('x-next-i18n-router-locale') || i18nConfig.defaultLocale;
-  response.headers.set('x-next-sub-pathname', currentLocale === i18nConfig.defaultLocale ? pathname : pathname.replace(`/${currentLocale}`, ''));
-  response.headers.set('x-next-pathname', pathname);
-  return response;
+  // const response = i18nRouter(request, i18nConfig);
+  // const pathname = request.nextUrl.pathname;
+  // const currentLocale = response.headers.get('x-next-i18n-router-locale') || i18nConfig.defaultLocale;
+  // response.headers.set('x-next-sub-pathname', currentLocale === i18nConfig.defaultLocale ? pathname : pathname.replace(`/${currentLocale}`, ''));
+  // response.headers.set('x-next-pathname', pathname);
+  // return response;
 }
 
 // See "Matching Paths" below to learn more
