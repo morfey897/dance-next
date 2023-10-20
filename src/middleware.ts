@@ -1,10 +1,25 @@
 import { i18nRouter } from 'next-i18n-router';
+import { parse } from 'accept-language-parser';
+import type { Config } from 'next-i18n-router/dist/types';
 import i18nConfig from '../i18n.config';
 import type { NextRequest } from 'next/server'
 
+const localeDetector = (request: NextRequest, config: Config) => {
+  const langList: Array<{ code: string }> = parse(
+    request.headers.get("accept-language")
+  );
+  const languages: string[] = [...new Set(langList.map(({ code }) => code))];
+  const toLang = languages.find((lang) => config.locales.includes(lang)) || config.defaultLocale;
+  const langData = (i18nConfig.translation as Record<string, { hide?: boolean }>)[toLang];
+  return !langData || langData.hide ? config.defaultLocale : toLang;
+};
+
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  const response = i18nRouter(request, i18nConfig);
+  const response = i18nRouter(request, {
+    ...i18nConfig,
+    localeDetector
+  });
   const pathname = request.nextUrl.pathname;
   const currentLocale = response.headers.get('x-next-i18n-router-locale') || i18nConfig.defaultLocale;
   response.headers.set('x-next-sub-pathname', currentLocale === i18nConfig.defaultLocale ? pathname : pathname.replace(`/${currentLocale}`, ''));
