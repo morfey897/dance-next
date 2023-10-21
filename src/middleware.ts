@@ -28,7 +28,10 @@ export function middleware(request: NextRequest) {
     newLocale = pathnameLocale;
     newPathname = pathname.replace(`/${pathnameLocale}`, '') || "/";
   } else {
-    const locale = getLocale(request)
+    let locale = getLocale(request);
+    if (locale === 'ru') {
+      locale = defaultLocale;
+    }
     request.nextUrl.pathname = `/${locale}${pathname}`
     // e.g. incoming request is /products
     // The new URL is now /en-US/products
