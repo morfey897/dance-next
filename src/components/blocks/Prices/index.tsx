@@ -6,7 +6,7 @@ import Section from "@/components/elements/Section";
 // import Item from "./Item";
 import RenderHTML from "../../elements/RenderHTML";
 import { SectionType } from "@/models/page";
-import { request } from "@/lib/sanity.server";
+import { requestContent } from "@/lib/sanity.server";
 import { PriceType, query as queryPrices } from "@/models/price";
 import Group from "./Group";
 import { GroupItem, Item } from "./Items";
@@ -14,7 +14,7 @@ import { PortableTextBlock } from '@portabletext/types';
 
 async function getPrices(ids: Array<string> | undefined) {
   if (!ids || ids.length === 0) return [];
-  return await request<Array<PriceType>>(
+  return await requestContent<Array<PriceType>>(
     queryPrices({
       ids
     }),

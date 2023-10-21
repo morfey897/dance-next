@@ -4,7 +4,7 @@ import Headline from "@/components/elements/Headline";
 import RenderHTML from "@/components/elements/RenderHTML";
 
 import { SectionType } from "@/models/page";
-import { request } from "@/lib/sanity.server";
+import { requestContent } from "@/lib/sanity.server";
 import { DirectionType, query as queryDirections } from "@/models/direction";
 
 import ClientWrapper from "./ClientWrapper";
@@ -12,7 +12,7 @@ import Section from "@/components/elements/Section";
 
 async function getDirections(ids: Array<string> | undefined) {
   if (!ids || ids.length === 0) return [];
-  return await request<Array<DirectionType>>(
+  return await requestContent<Array<DirectionType>>(
     queryDirections({
       ids
     }),

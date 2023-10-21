@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "deploy": "npx @cloudflare/next-on-pages",
+    "analyze": "ANALYZE=true next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -33,6 +33,7 @@
     "tailwindcss-hyphens": "^0.1.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^13.5.6",
     "@types/google.maps": "^3.54.0",
     "@types/lodash": "^4.14.198",
     "@types/negotiator": "^0.6.2",

@@ -13,18 +13,18 @@ export const client = createClient({
   token: process.env.SANITY_SECRET_TOKEN // Only if you want to update content with the client
 });
 
-export async function request<Type>(query: string | Record<string, string>, options?: FilteredResponseQueryOptions): Promise<Type> {
+export async function requestContent<Type>(query: string, options?: FilteredResponseQueryOptions): Promise<Type> {
   let response;
   const locale = getLocale();
   const index = (Math.random() * 100000).toFixed();
-  const q = typeof query === 'string' ? query : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
+  // const q = typeof query === 'string' ?  : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
   if (process.env.NODE_ENV === 'development' && process.env.LOGGING === 'true') {
     console.info(`<Request id="${index}">`);
     console.info(q);
     console.info("<Request/>");
   }
   try {
-    response = await client.fetch(q, { defaultLocale: defaultLocale, locale }, { filterResponse: true, ...options } || {});
+    response = await client.fetch(query, { defaultLocale: defaultLocale, locale }, { filterResponse: true, ...options } || {});
   } catch (error) {
     response = {};
   }

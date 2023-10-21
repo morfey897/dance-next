@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation'
 
-import { request } from "@/lib/sanity.server";
+import { requestContent } from "@/lib/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
 import { SettingsType, query as querySettings } from "@/models/settings";
 import { getMetadata, getJSON_LD } from "@/utils/seo";
@@ -15,25 +15,29 @@ import { PageParams } from '@/types/params';
 
 // const SLUG = '/';
 
-async function getPage(slug:string) {
-  return await request<{ page: PageType; settings: SettingsType }>(
-    {
-      page: queryPage({ slug }),
-      settings: querySettings({}),
-    },
+async function getSettings() {
+  return await requestContent<SettingsType>(
+    querySettings({}),
+    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 1 * 60 * 60, tags: ['settings'] } }
+  );
+}
+
+async function getPage(slug: string) {
+  return await requestContent<PageType>(
+    queryPage({ slug }),
     process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
   );
 }
 
 export async function generateMetadata(context: PageParams): Promise<Metadata> {
   const slug = context.params.slug || "/";
-  const { page, settings } = await getPage(slug);
+  const [page, settings] = await Promise.all([getPage(slug), getSettings()]);
   return getMetadata(page, settings);
 }
 
 export default async function Page(context: PageParams) {
   const slug = context.params.slug || "/";
-  const { page, settings } = await getPage(slug);
+  const [page, settings] = await Promise.all([getPage(slug), getSettings()]);
   if (!page) {
     notFound();
   }
