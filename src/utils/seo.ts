@@ -2,8 +2,8 @@ import { PageType } from "@/models/page";
 import { SettingsType } from "@/models/settings";
 import { Metadata } from "next";
 import { urlFor } from "@/lib/sanity";
-import { locales, defaultLocale } from "@/i18n.config";
-import { getPathname, getSubPathname } from '@/headers';
+import { locales } from "@/i18n.config";
+import { getPathname, getLocale } from '@/headers';
 import { findImage } from "./filter";
 
 export const getTitle = (pageTitle: string, rootTitle?: String) => [(pageTitle || "").trim(), (rootTitle || "").trim()].filter(a => !!a).join(" | ");
@@ -11,23 +11,22 @@ export const getTitle = (pageTitle: string, rootTitle?: String) => [(pageTitle |
 export const getMetadata = (page: PageType, settings: SettingsType): Metadata => {
 
   const pathname = getPathname();
-  const subPathname = getSubPathname();
+  const locale = getLocale();
 
-  const alternatives = (locales || [])
-    .map(lang => [lang, lang === defaultLocale ? (subPathname || '') : `/${lang}${subPathname || ''}`])
-    .filter(([lang, path]) => path != pathname && !!path && !!lang)
-    .reduce((inc: Record<string, string>, [lang, path]) => {
-      inc[lang] = path;
+  const alternatives = locales
+    .filter(lang => lang != locale)
+    .reduce((inc: Record<string, string>, lang) => {
+      inc[lang] = pathname.replace(`/${locale}`, `/${lang}`);
       return inc;
     }, {});
 
   return {
-    title: getTitle(page.title, settings.title),
-    description: page.description || "",
+    title: getTitle(page?.title, settings?.title),
+    description: page?.description || "",
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
     openGraph: {
-      title: page.ogTitle || "",
-      description: page.ogDescription || "",
+      title: page?.ogTitle || "",
+      description: page?.ogDescription || "",
       images: [urlFor(page?.ogImage?.image).url()],
     },
     themeColor: '#161616',

@@ -41,7 +41,7 @@ export function middleware(request: NextRequest) {
   }
 
   response.headers.set('x-next-locale', newLocale);
-  response.headers.set('x-next-pathname', newPathname);
+  response.headers.set('x-next-pathname', pathname);
   return response;
 }
 

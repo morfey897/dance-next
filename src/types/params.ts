@@ -1,4 +1,4 @@
 
 export type PageParams = {
-  params: { locale: string }
+  params: { locale: string, slug: string }
 };

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation'
 
 import { request } from "@/lib/sanity.server";
 import { PageType, query as queryPage } from "@/models/page";
@@ -12,12 +13,12 @@ import Footer from "@/components/Footer";
 import clsx from 'clsx';
 import { PageParams } from '@/types/params';
 
-const SLUG = '/';
+// const SLUG = '/';
 
-async function getPage() {
+async function getPage(slug:string) {
   return await request<{ page: PageType; settings: SettingsType }>(
     {
-      page: queryPage({ slug: SLUG }),
+      page: queryPage({ slug }),
       settings: querySettings({}),
     },
     process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
@@ -25,13 +26,17 @@ async function getPage() {
 }
 
 export async function generateMetadata(context: PageParams): Promise<Metadata> {
-
-  const { page, settings } = await getPage();
+  const slug = context.params.slug || "/";
+  const { page, settings } = await getPage(slug);
   return getMetadata(page, settings);
 }
 
 export default async function Page(context: PageParams) {
-  const { page, settings } = await getPage();
+  const slug = context.params.slug || "/";
+  const { page, settings } = await getPage(slug);
+  if (!page) {
+    notFound();
+  }
 
   const nav: Array<CTAType> = page.sections
     .filter((item) => !!item.anchor?.tag)
@@ -42,7 +47,7 @@ export default async function Page(context: PageParams) {
           tag: item.anchor?.tag || "",
         },
         page: {
-          slug: SLUG
+          slug: context.params.slug
         }
       }
     }))
