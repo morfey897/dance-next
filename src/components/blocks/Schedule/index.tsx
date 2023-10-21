@@ -9,7 +9,7 @@ function Schedule({ headline, anchor, body }: SectionType) {
 
   return <Article anchor={anchor?.tag}>
     <Section animate="b-t">
-      <Headline headline={headline}>
+      <Headline headline={headline} className="uppercase text-3xl md:text-7xl text-center">
         <RenderHTML body={body} />
       </Headline>
     </Section>

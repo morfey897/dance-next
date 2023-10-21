@@ -68,7 +68,7 @@ async function Prices({ headline, anchor, body, divisions }: SectionType) {
 
   return <Article effect={{ x: 'right', y: 'bottom' }} anchor={anchor?.tag}>
     <Section animate="b-t">
-      <Headline headline={headline}>
+      <Headline headline={headline} className="uppercase text-3xl md:text-7xl text-center">
         <RenderHTML body={body} />
       </Headline>
       <div className="space-y-14 mt-12" >

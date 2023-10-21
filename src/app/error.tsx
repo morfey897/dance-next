@@ -28,7 +28,7 @@ export default function Error({
     <Header logo={undefined} navigation={undefined} />
     <main className={'overflow-hidden'}>
       <Article effect={{ x: 'left', y: 'center' }} className='!pt-20 h-[80vh]'>
-        <Headline headline={headline} />
+        <Headline headline={headline} className='uppercase text-3xl md:text-7xl text-center'/>
         <button onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()

@@ -56,7 +56,7 @@ function Asset({ asset, alt: alternative, src: resource, width: tagWidth, height
 
   return <picture {...props}>
     {pictureProps?.sources.map((props) => <source key={props.srcSet} {...props} />)}
-    <img alt={asset?.alt ?? alternative} {...pictureProps?.imgProps} loading={'lazy'} decoding="async" />
+    <img alt={asset?.alt ?? asset?.caption ?? alternative} {...pictureProps?.imgProps} loading={'lazy'} decoding="async" />
   </picture>;
 }
 

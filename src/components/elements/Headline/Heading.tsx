@@ -4,7 +4,7 @@ import React, { memo } from "react";
 export type HeadingType = 'h1' | 'h2' | 'h3' | 'h4';
 
 function Heading({ className, children, as }: { as: HeadingType } & React.HTMLAttributes<HTMLHeadingElement>) {
-  const extendClassName = clsx("uppercase text-3xl md:text-7xl text-center", className);
+  const extendClassName = clsx(className);
   switch (as) {
     case 'h1': return <h1 className={extendClassName}>{children}</h1>;
     case 'h2': return <h2 className={extendClassName}>{children}</h2>;

@@ -12,7 +12,7 @@ function Gallery({ headline, anchor, body, images }: SectionType) {
 
   return <Article effect={{ x: 'left' }} anchor={anchor?.tag}>
     <Section animate="b-t">
-      <Headline headline={headline}>
+      <Headline headline={headline} className="uppercase text-3xl md:text-7xl text-center">
         <RenderHTML body={body} />
       </Headline>
     </Section>

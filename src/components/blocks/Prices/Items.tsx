@@ -2,6 +2,7 @@ import clsx from "clsx";
 import type { PriceType } from "@/models/price";
 import RenderHTML from "../../elements/RenderHTML";
 import CurrencyLabel from "./CurrencyLabel";
+import Heading from "@/components/elements/Headline/Heading";
 
 const Label = ({ className, children, ...rest }: React.HTMLProps<HTMLParagraphElement>) => <p className={clsx("absolute top-[-24px] right-0 text-pnk-100 uppercase rounded-full border w-14 h-14 font-light text-sm flex justify-center items-center leading-tight rotate-45", className)} {...rest}>{children}</p>
 
@@ -10,7 +11,7 @@ export function Item({ item, className }: { item: PriceType } & React.HTMLProps<
   const hasOldPrice = item.oldPrice > 0 && item.oldPrice != item.price;
   return <BaseItem className={className}>
     {item.labels?.map((item) => <Label key={item.description || item.tag}>{item.description || item.tag}</Label>)}
-    <h3 className="font-medium text-xl md:text-4xl">{item.headline}</h3>
+    <Heading as="h4" className="font-medium text-xl md:text-4xl">{item.headline}</Heading>
     <div className="relative text-center mt-5">
       <h4 className="font-medium md:font-light text-xl md:text-4xl text-pnk-200">{item.price}<span className="ml-2"><CurrencyLabel currency={item.currency} /></span></h4>
       {hasOldPrice &&
@@ -27,7 +28,7 @@ export function Item({ item, className }: { item: PriceType } & React.HTMLProps<
 export function GroupItem({ item, className }: { item: PriceType & { items?: PriceType[] } } & React.HTMLProps<HTMLDivElement>) {
 
   return <BaseItem className={className}>
-    <h3 className="font-medium text-xl md:text-4xl">{item.headline}</h3>
+    <Heading as="h4" className="font-medium text-xl md:text-4xl">{item.headline}</Heading>
     <RenderHTML className="font-light text-sm md:text-lg mt-5" body={item.body} />
     <div className="divide-y divide-pnk-100 mt-7 md:mt-8">
       {item.items?.map((itm) => {

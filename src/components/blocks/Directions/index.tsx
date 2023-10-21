@@ -27,7 +27,7 @@ async function Directions({ headline, anchor, divisions, body }: SectionType) {
 
   return <Article effect={{ x: 'left', y: 'center' }} anchor={anchor?.tag}>
     <Section animate="b-t">
-      <Headline headline={headline}>
+      <Headline headline={headline} className="uppercase text-3xl md:text-7xl text-center">
         <RenderHTML body={body} />
       </Headline>
       {directions?.length > 0 && <ClientWrapper directions={directions} />}

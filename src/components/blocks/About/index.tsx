@@ -21,7 +21,7 @@ function About({ headline, body, anchor, callToAction, images }: SectionType) {
       <div className="relative z-10">
         <Asset asset={image} quality={100} alt={headline} className="[&>img]:m-auto md:[&>img]:p-0 [&>img]:px-10 brightness-75" />
         <Section animate="b-t">
-          <Headline headline={headline} as='h1' className="text-4xl md:text-9xl mt-14">
+          <Headline headline={headline} as='h1' className="text-4xl md:text-9xl mt-14 uppercase text-center">
             <RenderHTML body={body} className="text-sm md:text-lg mt-7 max-w-screen-lg m-auto" />
           </Headline>
           <CTA cta={callToAction} className="group space-x-2 block w-fit m-auto mt-7 text-sm md:text-lg text-center border-2 border-pnk-200 rounded-3xl py-2 px-4 hover:bg-pnk-200 hover:border-pnk-200 hover:shadow hover:shadow-pnk-200 active:border-pnk-100 active:shadow active:shadow-pnk-100">
