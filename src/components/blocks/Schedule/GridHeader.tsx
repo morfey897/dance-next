@@ -5,7 +5,7 @@ import { compareAsc, isWeekend, format } from "date-fns";
 import type { GridState } from "./types";
 import { Fragment } from "react";
 import { capitalize } from "@/utils/str";
-import translation from "./translation";
+import translation from "@/i18n/shedule";
 import { useTranslation } from "@/components/hooks/useTranslation";
 
 function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (d: Date) => void; } & React.HTMLProps<HTMLDivElement>) {

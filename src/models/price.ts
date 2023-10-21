@@ -1,6 +1,5 @@
 import { PortableTextBlock } from '@portabletext/types';
 import { DefaultProps, TagType, GROQ_TAG_EXTEND } from './_default';
-import { locales, currencies } from '../../i18n.config';
 
 const GROQ_PRICE = `_id, 
   "headline": coalesce(headline[$locale], headline[$defaultLocale]), 

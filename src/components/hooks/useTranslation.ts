@@ -1,7 +1,7 @@
-import { useCurrentLocale } from "next-i18n-router/client";
-import i18nConfig from "../../../i18n.config";
+import { useLocale } from "./useLocale";
+import type { DictionaryType } from "@/types/i18n";
 
-export function useTranslation(token: string, translation?: Record<string, { [lang: string]: string }>) {
-  const locale = useCurrentLocale(i18nConfig) || "";
+export function useTranslation(token: string, translation: DictionaryType): string {
+  const locale = useLocale();
   return translation && translation[token] && translation[token][locale] || token;;
 }

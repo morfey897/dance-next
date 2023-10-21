@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next'
 import { Comfortaa } from 'next/font/google'
-import { getLocale } from "@/headers"
+import { getLocale } from '@/headers';
 
 const font = Comfortaa({ subsets: ['latin'], weight: ['300', '400', '500'] });
 
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode,
 }) {

@@ -1,6 +1,6 @@
 import { createClient } from '@sanity/client';
 import type { FilteredResponseQueryOptions } from '@sanity/client';
-import i18nConfig from "../../i18n.config";
+import { defaultLocale } from "@/i18n.config";
 import { getLocale } from '@/headers';
 
 const API_VERSION = `v${new Date().toISOString().split("T")[0]}`;
@@ -24,14 +24,14 @@ export async function request<Type>(query: string | Record<string, string>, opti
     console.info("<Request/>");
   }
   try {
-    response = await client.fetch(q, { defaultLocale: i18nConfig.defaultLocale, locale }, { filterResponse: true, ...options } || {});
+    response = await client.fetch(q, { defaultLocale: defaultLocale, locale }, { filterResponse: true, ...options } || {});
   } catch (error) {
     response = {};
   }
-  // if (process.env.NODE_ENV === 'development') {
-  //   console.info(`<Response id="${index}">`);
-  //   console.info(JSON.stringify(response));
-  //   console.info("<Response/>");
-  // }
+  if (process.env.NODE_ENV === 'development' && process.env.LOGGING === 'true') {
+    console.info(`<Response id="${index}">`);
+    console.info(JSON.stringify(response));
+    console.info("<Response/>");
+  }
   return response;
 }

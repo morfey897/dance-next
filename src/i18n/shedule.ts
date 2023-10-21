@@ -1,6 +1,5 @@
-// export const translation: Record<string, { [lang: string]: string }> = 
-
-export default {
+import type { DictionaryType } from "@/types/i18n";
+const dictionary: DictionaryType = {
   today: {
     uk: 'Сьогодні',
     ru: 'Сегодня',
@@ -12,3 +11,5 @@ export default {
     en: 'Time',
   },
 };
+
+export default dictionary;

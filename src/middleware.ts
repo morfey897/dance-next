@@ -1,29 +1,44 @@
-import { i18nRouter } from 'next-i18n-router';
-import { parse } from 'accept-language-parser';
-import type { Config } from 'next-i18n-router/dist/types';
-import i18nConfig from '../i18n.config';
-import type { NextRequest } from 'next/server'
+import { locales, defaultLocale } from '@/i18n.config';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { match } from '@formatjs/intl-localematcher';
+import Negotiator from 'negotiator';
 
-const localeDetector = (request: NextRequest, config: Config) => {
-  const langList: Array<{ code: string }> = parse(
-    request.headers.get("accept-language")
-  );
-  const languages: string[] = [...new Set(langList.map(({ code }) => code))];
-  const toLang = languages.find((lang) => config.locales.includes(lang)) || config.defaultLocale;
-  const langData = (i18nConfig.translation as Record<string, { hide?: boolean }>)[toLang];
-  return !langData || langData.hide ? config.defaultLocale : toLang;
-};
-
+function getLocale(request: NextRequest) {
+  const headers = { 'accept-language': request.headers.get('accept-language') || "" };
+  const languages = new Negotiator({ headers })
+    .languages()
+    .map((lang) => lang.split('-')[0]);
+  return match([...new Set(languages)], locales, defaultLocale);
+}
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
-  const response = i18nRouter(request, {
-    ...i18nConfig,
-    localeDetector
-  });
-  const pathname = request.nextUrl.pathname;
-  const currentLocale = response.headers.get('x-next-i18n-router-locale') || i18nConfig.defaultLocale;
-  response.headers.set('x-next-sub-pathname', currentLocale === i18nConfig.defaultLocale ? pathname : pathname.replace(`/${currentLocale}`, ''));
-  response.headers.set('x-next-pathname', pathname);
+  // Check if there is any supported locale in the pathname
+  const { pathname } = request.nextUrl;
+  const pathnameLocale = locales.find(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  let newLocale;
+  let newPathname;
+  let response;
+  if (pathnameLocale) {
+    if (request.headers.get('x-next-locale') === pathnameLocale) return;
+    response = NextResponse.rewrite(request.nextUrl);
+    newLocale = pathnameLocale;
+    newPathname = pathname.replace(`/${pathnameLocale}`, '') || "/";
+  } else {
+    const locale = getLocale(request)
+    request.nextUrl.pathname = `/${locale}${pathname}`
+    // e.g. incoming request is /products
+    // The new URL is now /en-US/products
+    response = NextResponse.redirect(request.nextUrl);
+    newLocale = locale;
+    newPathname = pathname;
+  }
+
+  response.headers.set('x-next-locale', newLocale);
+  response.headers.set('x-next-pathname', newPathname);
   return response;
 }
 

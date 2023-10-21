@@ -3,14 +3,16 @@
 import clsx from "clsx";
 import { useScrollDirection } from "@/components/hooks/useScrollDetect";
 import Asset from "@/components/elements/Asset";
+import Link from "next/link";
 import { AssetType, CTAType } from "@/models/_default";
 import CTA from "@/components/elements/CTA";
 import { useLocale } from "@/components/hooks/useLocale";
-import { useRealPathname } from "@/components/hooks/useRealPathname";
-import { useCallback } from "react";
-import i18nConfig from "../../../i18n.config";
-
-const translation = (i18nConfig.translation as Record<string, { title: string; abr: string; hide?: boolean; }>);
+import { locales } from "@/i18n.config";
+import { useTranslation } from "@/components/hooks/useTranslation";
+import dictionary from "@/i18n/language";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+import staticLogo from "../../../public/assets/logo.png";
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -40,13 +42,13 @@ const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> =
     </svg>)
 }
 
-const LangTranslate = ({ lang, short, ...props }: { lang: string; short?: boolean; } & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
-  const translate = translation[lang];
+const LangTranslate = ({ lang, short, ...props }: { lang: string; short?: boolean; } & React.HTMLAttributes<HTMLOrSVGElement>) => {
+  const title = useTranslation(lang, dictionary);
+  const abr = useTranslation(`${lang}.abr`, dictionary);
   const Icon = ICONS[lang];
-  const label = (short ? translate?.abr : translate?.title) || lang;
-  return <button aria-label={label} {...props}>
-    {label} {!!Icon && <Icon height={12} />}
-  </button>;
+  return <>
+    {short ? abr : title} {!!Icon && <Icon height={12} {...props} />}
+  </>;
 }
 
 function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Array<CTAType> | undefined }) {
@@ -70,29 +72,20 @@ function Navigation({ navigation, mobile }: { mobile?: boolean; navigation: Arra
 function Languages() {
 
   const locale = useLocale();
-  const pathname = useRealPathname();
-
-  const onChange = useCallback((newLocale: string) => {
-    // set cookie for next-i18n-router
-    const days = 30;
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `NEXT_LOCALE=${newLocale};expires=${date.toUTCString()};path=/`;
-
-    const newHref = locale === i18nConfig.defaultLocale && !i18nConfig.prefixDefault ? `/${newLocale}${pathname}` : pathname.replace(`/${locale}`, `/${newLocale}`);
-
-    window.location.href = newHref;
-  }, []);
+  const pathname = usePathname();
 
   return <div className="relative group">
-    <LangTranslate name="language" lang={locale} short className="flex items-baseline gap-x-1" />
+    <button name="language" className="flex items-baseline gap-x-1">
+      <LangTranslate lang={locale} short />
+    </button>
+
     <ul className="absolute top-full right-0 -translate-y-2 transition-all invisible opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 bg-black bg-opacity-60 p-2.5 space-y-4 rounded-sm">
       {
-        i18nConfig.locales.map((toLang) => (
-          translation[toLang].hide ? null : <li key={toLang} className="text-center">
-            <LangTranslate lang={toLang}
-              onClick={() => onChange(toLang)}
-              className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === locale && 'text-gray-600 pointer-events-none')} />
+        locales.map((toLang) => (
+          toLang != 'ru' && <li key={toLang} className="text-center">
+            <Link href={pathname.replace(`/${locale}`, `/${toLang}`)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === locale && 'text-gray-600 pointer-events-none')}>
+              <LangTranslate lang={toLang} className={clsx(locale === toLang && "animate-pulse")} />
+            </Link>
           </li>
         ))
       }
@@ -111,7 +104,7 @@ function Header({ logo, navigation }: { logo: AssetType | undefined; navigation:
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
         <a aria-label={'home page'} href={`/${locale}`}>
-          <Asset asset={logo} alt="home page" />
+          {!!logo ? <Asset asset={logo} alt="home page" /> : <Image {...staticLogo} alt=""/>}
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
           <div className="block md:hidden">

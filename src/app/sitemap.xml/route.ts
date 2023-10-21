@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import i18nConfig from '../../../i18n.config';
+import { locales, defaultLocale } from '@/i18n.config';
 
 type Sitemap = Array<{
   url: string
@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
         lastModified: new Date(),
         changeFrequency: 'weekly',
         alternates: {
-          languages: i18nConfig.locales.reduce((map: any, lang: string) => {
-            map[lang] = `${process.env.NEXT_PUBLIC_DOMAIN}/${i18nConfig.defaultLocale === lang ? '' : lang}`;
+          languages: locales.reduce((map: any, lang: string) => {
+            map[lang] = `${process.env.NEXT_PUBLIC_DOMAIN}/${defaultLocale === lang ? '' : lang}`;
             return map
           }, {}),
         },

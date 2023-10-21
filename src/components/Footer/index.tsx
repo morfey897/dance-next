@@ -11,7 +11,7 @@ function Footer({ settings, navigation }: { navigation: Array<CTAType> | undefin
   return <footer className={"w-full z-20 pt-6 pb-6"}>
     <div className="max-w-screen-xl mx-auto px-4">
       <div className="flex justify-between items-center gap-4 flex-col-reverse md:flex-row">
-        <p className="text-[10px]">© {new Date().getFullYear()} {address?.place || ''}</p>
+        <p className="text-[10px]">© {new Date().getFullYear()} {address?.place || process.env.NEXT_PUBLIC_TITLE}</p>
         {!!navigation && <ul className="gap-4 flex flex-wrap">
           {
             navigation?.map((cta, index) => (<li key={`link-${index}`}><CTA className={clsx('text-sm  hover:underline hover:decoration-pnk-100')} cta={cta} /></li>))

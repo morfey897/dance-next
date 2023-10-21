@@ -1,11 +1,11 @@
 'use client';
-import { useLocale } from "../../hooks/useLocale";
-import { currencies } from "../../../../i18n.config";
+import { useTranslation } from "../../hooks/useTranslation";
+import dictionary from '@/i18n/currency';
 
 const CurrencyLabel = ({ currency, short }: { currency: string; short?: boolean; }) => {
-  const locale = useLocale();
-  const currencyData = (currencies as Record<string, { symbol: string; abr?: Record<string, string>; }>)[currency];
-  return (!short && currencyData.abr && currencyData.abr[locale] || currencyData?.symbol || currency);
+  const symbol = useTranslation(`${currency}.symbol`, dictionary);
+  const transition = useTranslation(currency, dictionary);
+  return short ? symbol : transition;
 }
 
 export default CurrencyLabel;

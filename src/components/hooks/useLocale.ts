@@ -1,7 +1,13 @@
-import { useCurrentLocale } from "next-i18n-router/client";
-import i18nConfig from "../../../i18n.config";
+import { usePathname } from "next/navigation";
+import { locales, defaultLocale } from "@/i18n.config";
 
 export function useLocale() {
-  const locale = useCurrentLocale(i18nConfig) || "";
-  return locale;
+
+  const pathname = usePathname();
+
+  const pathnameLocale = locales.find(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  return pathnameLocale || defaultLocale;
 }

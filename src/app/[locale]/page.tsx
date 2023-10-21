@@ -10,6 +10,7 @@ import { findImage } from "@/utils/filter";
 import { CTAType } from "@/models/_default";
 import Footer from "@/components/Footer";
 import clsx from 'clsx';
+import { PageParams } from '@/types/params';
 
 const SLUG = '/';
 
@@ -23,13 +24,13 @@ async function getPage() {
   );
 }
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(context: PageParams): Promise<Metadata> {
 
   const { page, settings } = await getPage();
   return getMetadata(page, settings);
 }
 
-export default async function Page() {
+export default async function Page(context: PageParams) {
   const { page, settings } = await getPage();
 
   const nav: Array<CTAType> = page.sections
