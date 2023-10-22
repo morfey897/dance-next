@@ -20,13 +20,11 @@ export function middleware(request: NextRequest) {
   );
 
   let newLocale;
-  let newPathname;
   let response;
   if (pathnameLocale) {
     if (request.headers.get('x-next-locale') === pathnameLocale) return;
     response = NextResponse.rewrite(request.nextUrl);
     newLocale = pathnameLocale;
-    newPathname = pathname.replace(`/${pathnameLocale}`, '') || "/";
   } else {
     let locale = getLocale(request);
     if (locale === 'ru') {
@@ -37,7 +35,6 @@ export function middleware(request: NextRequest) {
     // The new URL is now /en-US/products
     response = NextResponse.redirect(request.nextUrl);
     newLocale = locale;
-    newPathname = pathname;
   }
 
   response.headers.set('x-next-locale', newLocale);
