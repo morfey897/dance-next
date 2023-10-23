@@ -7,22 +7,33 @@ import { SettingsType, query as querySettings } from "@/models/settings";
 import { getMetadata, getJSON_LD } from "@/utils/seo";
 import Factory from "@/components/blocks";
 import Header from "@/components/Header";
-import { findImage } from "@/utils/filter";
 import { CTAType } from "@/models/_default";
 import Footer from "@/components/Footer";
 import clsx from 'clsx';
 import { PageParams } from '@/types/params';
+import { flatten } from 'flat';
+import { defaultLocale } from '../../../../i18n.config';
 
-// const SLUG = '/';
+async function getTranslation(context: PageParams) {
+  const locale = context?.params?.locale || defaultLocale;
+  return await import(`../../../../public/i18n/${locale}.json`)
+    .then(module => module.default)
+    .then((json) => flatten<{ [key: string]: { [key: string]: string } | string }, Record<string, string>>(json));
+}
 
-async function getSettings() {
-  return await requestContent<SettingsType>(
+async function getSettings(context: PageParams) {
+  const settings = await requestContent<SettingsType>(
     querySettings({}),
     process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 1 * 60 * 60, tags: ['settings'] } }
   );
+
+  const i18n = await getTranslation(context);
+  settings._i18n = i18n;
+  return settings; 
 }
 
-async function getPage(slug: string) {
+async function getPage(context: PageParams) {
+  const slug = context?.params?.slug || "/";
   return await requestContent<PageType>(
     queryPage({ slug }),
     process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
@@ -30,14 +41,12 @@ async function getPage(slug: string) {
 }
 
 export async function generateMetadata(context: PageParams): Promise<Metadata> {
-  const slug = context.params.slug || "/";
-  const [page, settings] = await Promise.all([getPage(slug), getSettings()]);
+  const [page, settings] = await Promise.all([getPage(context), getSettings(context)]);
   return getMetadata(page, settings);
 }
 
 export default async function Page(context: PageParams) {
-  const slug = "/";
-  const [page, settings] = await Promise.all([getPage(slug), getSettings()]);
+  const [page, settings] = await Promise.all([getPage(context), getSettings(context)]);
   if (!page) {
     notFound();
   }
@@ -51,13 +60,13 @@ export default async function Page(context: PageParams) {
           tag: item.anchor?.tag || "",
         },
         page: {
-          slug: context.params.slug
+          slug: context?.params?.slug || '/'
         }
       }
     }))
 
   return (<>
-    <Header logo={findImage(settings?.images, 'head')} navigation={nav} />
+    <Header settings={settings} navigation={nav} />
     <main className={clsx('overflow-hidden')}>
       <Factory sections={page.sections} settings={settings} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getJSON_LD(settings)) }} />

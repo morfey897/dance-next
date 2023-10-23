@@ -1,0 +1,38 @@
+{
+  "language": {
+    "uk": {
+      "title": "Українська",
+      "abr": "Укр"
+    },
+    "ru": {
+      "title": "Язык",
+      "abr": "Мова"
+    },
+    "en": {
+      "title": "English",
+      "abr": "Eng"
+    }
+  },
+  "currency": {
+    "UAH": {
+      "symbol": "₴",
+      "abr": "грн."
+    },
+    "USD": {
+      "symbol": "$",
+      "abr": "дол."
+    },
+    "EUR": {
+      "symbol": "€",
+      "abr": "євр."
+    }
+  },
+  "shedule": {
+    "today": "Сьогодні",
+    "time": "Час заняття"
+  },
+  "error": {
+    "headline": "Упс... щось пішло не так",
+    "subheadline": "Спробувати ще"
+  }
+}

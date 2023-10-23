@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-import { locales, defaultLocale } from '@/i18n.config';
+import { locales, defaultLocale } from '../../../i18n.config';
 
 type Sitemap = Array<{
   url: string

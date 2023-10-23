@@ -1,16 +1,12 @@
 import Headline from "@/components/elements/Headline";
 import Article from "@/components/elements/Article";
 import Section from "@/components/elements/Section";
-// import Swiper from "./Swiper";
-// import Controls from "./Controls";
-// import Item from "./Item";
 import RenderHTML from "../../elements/RenderHTML";
 import { SectionType } from "@/models/page";
 import { requestContent } from "@/lib/sanity.server";
 import { PriceType, query as queryPrices } from "@/models/price";
-import Group from "./Group";
-import { GroupItem, Item } from "./Items";
-import { PortableTextBlock } from '@portabletext/types';
+import { SettingsType } from "@/models/settings";
+import ClientWrapper from "./ClientWrapper"
 
 async function getPrices(ids: Array<string> | undefined) {
   if (!ids || ids.length === 0) return [];
@@ -22,7 +18,7 @@ async function getPrices(ids: Array<string> | undefined) {
   );
 }
 
-async function Prices({ headline, anchor, body, divisions }: SectionType) {
+async function Prices({ headline, anchor, body, divisions, settings }: SectionType & { settings: SettingsType }) {
 
   const ids = divisions?.map(({ _id }) => _id) || [];
   const prices = (await getPrices(ids)).sort((a, b) => ids.indexOf(a._id) - ids.indexOf(b._id));
@@ -71,19 +67,7 @@ async function Prices({ headline, anchor, body, divisions }: SectionType) {
       <Headline headline={headline} className="uppercase text-3xl md:text-7xl text-center">
         <RenderHTML body={body} />
       </Headline>
-      <div className="space-y-14 mt-12" >
-        {list.map((group, index) => <Section animate={index % 2 ? "r-l" : 'l-r'} key={group._id}>
-          <Group headline={group.headline}>
-            {
-              group.items.map((el) => {
-                const items = el.items;
-                return !items || !Array.isArray(items) || items.length === 0 ? <Item key={el._id} item={el} /> :
-                  <GroupItem key={el._id} item={el} />;
-              })
-            }
-          </Group>
-        </Section>)}
-      </div>
+      <ClientWrapper settings={settings} list={list} />
     </Section>
   </Article >;
 }

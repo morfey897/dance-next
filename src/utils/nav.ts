@@ -1,4 +1,4 @@
-import { defaultLocale, locales } from '@/i18n.config';
+import { defaultLocale, locales } from '../../i18n.config';
 
 export function pathnameLocale(pathname: string) {
   return locales
@@ -6,6 +6,7 @@ export function pathnameLocale(pathname: string) {
     .find(
       (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     );
+    
 }
 
 export function replaceLocale(pathname: string, toLocale: string) {

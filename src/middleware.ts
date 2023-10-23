@@ -1,6 +1,6 @@
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
-import { locales, defaultLocale, LOCALE_COOKIE } from './i18n.config';
+import { locales, defaultLocale, LOCALE_COOKIE} from '../i18n.config';
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -52,6 +52,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|assets|favicon.ico|sitemap.xml|robots.txt|site.webmanifest|browserconfig.xml).*)',
+    '/((?!api|_next/static|_next/image|assets|i18n|favicon.ico|sitemap.xml|robots.txt|site.webmanifest|browserconfig.xml).*)',
   ],
 }

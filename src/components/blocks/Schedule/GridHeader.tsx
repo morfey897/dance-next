@@ -5,18 +5,17 @@ import { compareAsc, isWeekend, format } from "date-fns";
 import type { GridState } from "./types";
 import { Fragment } from "react";
 import { capitalize } from "@/utils/str";
-import translation from "@/i18n/shedule";
 import { useTranslation } from "@/components/hooks/useTranslation";
 
 function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (d: Date) => void; } & React.HTMLProps<HTMLDivElement>) {
 
-  const timeLabel = useTranslation('time', translation);
+  const t = useTranslation('shedule');
 
   return <nav className={clsx("sticky top-0 z-30 bg-black grid gap-2 md:border-b-2 border-b-pnk-200 py-4 md:py-6 items-end", {
     'grid-cols-7 md:grid-cols-8': state.dates.length === 7,
   })}>
     <div className="font-medium text-xl text-center hidden md:block overflow-hidden text-ellipsis">
-      {timeLabel}
+      {t('time')}
     </div>
     {
       state.dates.map((date) => {

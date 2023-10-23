@@ -1,7 +1,6 @@
 'use client' // Error components must be Client Components
 
 import { useEffect } from 'react';
-import dictionary from '@/i18n/error';
 import { useTranslation } from '@/components/hooks/useTranslation';
 import Headline from '@/components/elements/Headline';
 import Article from '@/components/elements/Article';
@@ -16,24 +15,24 @@ export default function Error({
   reset: () => void
 }) {
 
-  const headline = useTranslation('headline', dictionary);
-  const subheadline = useTranslation('subheadline', dictionary);
+  const t = useTranslation('error');
 
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error)
   }, [error])
 
+  console.log('ERRORR_PAGE');
   return (<>
-    <Header logo={undefined} navigation={undefined} />
+    <Header settings={undefined} navigation={undefined} />
     <main className={'overflow-hidden'}>
       <Article effect={{ x: 'left', y: 'center' }} className='!pt-20 h-[80vh]'>
-        <Headline headline={headline} className='uppercase text-3xl md:text-7xl text-center'/>
+        <Headline headline={t('headline')} className='uppercase text-3xl md:text-7xl text-center'/>
         <button onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()
         } className="group space-x-2 block w-fit m-auto mt-7 text-sm md:text-lg text-center border-2 border-pnk-200 rounded-3xl py-2 px-4 hover:bg-pnk-200 hover:border-pnk-200 hover:shadow hover:shadow-pnk-200 active:border-pnk-100 active:shadow active:shadow-pnk-100">
-          <span className="inline-block">{subheadline}</span>
+          <span className="inline-block">{t('subheadline')}</span>
           <svg className="animate-bounce inline-block fill-pnk-100 group-hover:animate-none" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 512 512" xmlSpace="preserve">
             <g>

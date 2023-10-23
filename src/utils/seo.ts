@@ -2,7 +2,7 @@ import { PageType } from "@/models/page";
 import { SettingsType } from "@/models/settings";
 import { Metadata } from "next";
 import { urlFor } from "@/lib/sanity";
-import { defaultLocale, locales } from "@/i18n.config";
+import { locales } from "../../i18n.config";
 import { getPathname, getLocale } from '@/headers';
 import { findImage } from "./filter";
 import { replaceLocale } from "./nav";

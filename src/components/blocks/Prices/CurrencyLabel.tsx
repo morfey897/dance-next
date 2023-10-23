@@ -1,11 +1,10 @@
 'use client';
-import { useTranslation } from "../../hooks/useTranslation";
-import dictionary from '@/i18n/currency';
+import { useTranslation } from "@/components/hooks/useTranslation";
 
 const CurrencyLabel = ({ currency, short }: { currency: string; short?: boolean; }) => {
-  const symbol = useTranslation(`${currency}.symbol`, dictionary);
-  const transition = useTranslation(currency, dictionary);
-  return short ? symbol : transition;
+  const t = useTranslation('currency');
+  return short ? t(`${currency}.symbol`) : t(`${currency}.abr`);
+  return currency;
 }
 
 export default CurrencyLabel;

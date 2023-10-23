@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import { defaultLocale } from "@/i18n.config";
+import { defaultLocale } from "../i18n.config";
 import { pathnameLocale } from "@/utils/nav";
 
 export const getPathname = (): string => headers().get('X-Next-Pathname') || "/";

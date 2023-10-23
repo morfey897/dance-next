@@ -3,9 +3,10 @@ import Article from "@/components/elements/Article";
 import Section from "@/components/elements/Section";
 import RenderHTML from "@/components/elements/RenderHTML";
 import ClientWrapper from "./ClientWrapper";
-import { SectionType } from "@/models/page";
+import type { SectionType } from "@/models/page";
+import type { SettingsType } from "@/models/settings";
 
-function Schedule({ headline, anchor, body }: SectionType) {
+function Schedule({ headline, anchor, body, settings }: SectionType & { settings: SettingsType }) {
 
   return <Article anchor={anchor?.tag}>
     <Section animate="b-t">
@@ -14,7 +15,7 @@ function Schedule({ headline, anchor, body }: SectionType) {
       </Headline>
     </Section>
     <Section animate="b-t">
-      <ClientWrapper />
+      <ClientWrapper settings={settings} />
     </Section>
   </Article >;
 }

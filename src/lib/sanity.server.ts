@@ -1,6 +1,6 @@
 import { createClient } from '@sanity/client';
 import type { FilteredResponseQueryOptions } from '@sanity/client';
-import { defaultLocale } from "@/i18n.config";
+import { defaultLocale } from "../../i18n.config";
 import { getLocale } from '@/headers';
 
 const API_VERSION = `v${new Date().toISOString().split("T")[0]}`;
@@ -20,7 +20,7 @@ export async function requestContent<Type>(query: string, options?: FilteredResp
   // const q = typeof query === 'string' ?  : "{" + Object.entries(query).map(([key, value]) => `"${key}": ${value}`).join(",") + "}";
   if (process.env.NODE_ENV === 'development' && process.env.LOGGING === 'true') {
     console.info(`<Request id="${index}">`);
-    console.info(q);
+    console.info(query);
     console.info("<Request/>");
   }
   try {

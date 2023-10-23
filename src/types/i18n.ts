@@ -1,4 +1,1 @@
-import { locales } from '@/i18n.config';
-type Lang = (typeof locales)[number];
-
-export type DictionaryType = Record<string, Record<Lang, string>>;
+export type I18nType = Record<string, string> | undefined;

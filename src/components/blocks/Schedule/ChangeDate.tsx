@@ -4,12 +4,11 @@ import { compareAsc, format } from "date-fns";
 import { useMemo } from "react";
 import clsx from "clsx";
 import type { GridState } from "./types";
-import translation from "@/i18n/shedule";
 import { useTranslation } from "@/components/hooks/useTranslation";
 
 function ChangeDate({ onNext, onPrev, onNow, state, className }: { onNext: React.MouseEventHandler; onPrev: React.MouseEventHandler; onNow: React.MouseEventHandler; state: GridState; } & React.HTMLProps<HTMLDivElement>) {
 
-  const todayLabel = useTranslation('today', translation);
+  const t = useTranslation('shedule');
 
   const showToday = useMemo(() => (
     compareAsc(state.now, state.dates[0]) <= 0 || compareAsc(state.dates[state.dates.length - 1], state.now) <= 0
@@ -24,7 +23,7 @@ function ChangeDate({ onNext, onPrev, onNow, state, className }: { onNext: React
       </button>
       <div>
         <p className="inline-block text-pnk-200">{format(state.dates[0], 'dd MMM', { locale: state.locale }) + ' - ' + format(state.dates[state.dates.length - 1], 'dd MMM', { locale: state.locale })}</p>
-        {showToday && <button aria-label={todayLabel} onClick={onNow} className="block m-auto text-sm underline">{todayLabel}</button>}
+        {showToday && <button aria-label={t('today')} onClick={onNow} className="block m-auto text-sm underline">{t('today')}</button>}
       </div>
       <button aria-label={'next week'} className="group" onClick={onNext}>
         <svg className="stroke-white group-hover:stroke-pnk-200 group-active:stroke-pnk-100" fill="none" width="22" height="44" viewBox="0 0 22 44" xmlns="http://www.w3.org/2000/svg">

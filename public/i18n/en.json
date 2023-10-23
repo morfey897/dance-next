@@ -1,0 +1,39 @@
+{
+  
+  "language": {
+    "uk": {
+      "title": "Українська",
+      "abr": "Укр"
+    },
+    "ru": {
+      "title": "Язык",
+      "abr": "Мова"
+    },
+    "en": {
+      "title": "English",
+      "abr": "Eng"
+    }
+  },
+  "currency": {
+    "UAH": {
+      "symbol": "₴",
+      "abr": "uah."
+    },
+    "USD": {
+      "symbol": "$",
+      "abr": "usd."
+    },
+    "EUR": {
+      "symbol": "€",
+      "abr": "eur."
+    }
+  },
+  "shedule": {
+    "today": "Today",
+    "time": "Time"
+  },
+  "error": {
+    "headline": "Something went wrong!",
+    "subheadline": "Try again"
+  }
+}

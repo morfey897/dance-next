@@ -9,9 +9,11 @@ import Grid from "./Grid";
 import type { GridState, DateAction, EventType } from "./types";
 import useSWR from 'swr';
 import { toDate } from "@/utils/date";
+import { I18Provider } from "@/components/hooks/useTranslation";
 
 import { useInView } from 'react-intersection-observer';
 import { useLocale } from "@/components/hooks/useLocale";
+import { SettingsType } from "@/models/settings";
 
 const LOCALES: Record<string, Locale> = {
   uk: uk,
@@ -109,7 +111,7 @@ function InnerGrid() {
   </>
 }
 
-function ClientWrapper() {
+function ClientWrapper({ settings }: { settings: SettingsType }) {
 
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -117,7 +119,9 @@ function ClientWrapper() {
   });
 
   return <div ref={ref}>
-    {inView && <InnerGrid />}
+    {inView && <I18Provider value={settings._i18n}>
+      <InnerGrid />
+    </I18Provider>}
   </div>;
 }
 
