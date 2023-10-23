@@ -1,13 +1,12 @@
 import { usePathname } from "next/navigation";
-import { locales, defaultLocale } from "@/i18n.config";
+import { defaultLocale } from "@/i18n.config";
+import { pathnameLocale } from '@/utils/nav';
 
 export function useLocale() {
 
   const pathname = usePathname();
 
-  const pathnameLocale = locales.find(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
+  const pLocale = pathnameLocale(pathname);
 
-  return pathnameLocale || defaultLocale;
+  return pLocale || defaultLocale;
 }

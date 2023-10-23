@@ -1,44 +1,44 @@
-import { locales, defaultLocale } from '@/i18n.config';
-import type { NextRequest } from 'next/server';
+import { match } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
+import { locales, defaultLocale, LOCALE_COOKIE } from './i18n.config';
+import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { match } from '@formatjs/intl-localematcher';
-import Negotiator from 'negotiator';
+
+type LangType = (typeof locales & undefined);
 
 function getLocale(request: NextRequest) {
   const headers = { 'accept-language': request.headers.get('accept-language') || "" };
   const languages = new Negotiator({ headers })
     .languages()
     .map((lang) => lang.split('-')[0]);
-  return match([...new Set(languages)], locales, defaultLocale);
+  return match([...new Set(languages)], locales, defaultLocale) as unknown as LangType;
 }
-// This function can be marked `async` if using `await` inside
+
 export function middleware(request: NextRequest) {
-  // Check if there is any supported locale in the pathname
   const { pathname } = request.nextUrl;
   const pathnameLocale = locales.find(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  );
+  ) as LangType;
 
-  let newLocale;
   let response;
   if (pathnameLocale) {
-    if (request.headers.get('x-next-locale') === pathnameLocale) return;
-    response = NextResponse.rewrite(request.nextUrl);
-    newLocale = pathnameLocale;
-  } else {
-    let locale = getLocale(request);
-    if (locale === 'ru') {
-      locale = defaultLocale;
+    if (pathnameLocale != defaultLocale) {
+      response = NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL(pathname.replace(`/${pathnameLocale}`, ""), request.url));
     }
-    request.nextUrl.pathname = `/${locale}${pathname}`
-    // e.g. incoming request is /products
-    // The new URL is now /en-US/products
-    response = NextResponse.redirect(request.nextUrl);
-    newLocale = locale;
+  } else {
+    const cookieValue = request.cookies.get(LOCALE_COOKIE)?.value;
+
+    const locale = locales.includes(cookieValue as LangType) ? cookieValue : getLocale(request);
+    if (locale != defaultLocale) {
+      return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
+    } else {
+      response = NextResponse.rewrite(new URL(`/${locale}${pathname}`, request.url));
+    }
   }
 
-  response.headers.set('x-next-locale', newLocale);
-  response.headers.set('x-next-pathname', pathname);
+  response.headers.set('X-Next-Pathname', pathname);
   return response;
 }
 

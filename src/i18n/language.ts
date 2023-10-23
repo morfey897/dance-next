@@ -26,9 +26,9 @@ const dictionary: DictionaryType = {
     en: 'Язык',
   },
   'ru.abr': {
-    uk: 'Язык',
-    ru: 'Язык',
-    en: 'Язык',
+    uk: ' ',
+    ru: 'Мова',
+    en: ' ',
   },
 };
 

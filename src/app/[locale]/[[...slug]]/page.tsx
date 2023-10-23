@@ -36,7 +36,7 @@ export async function generateMetadata(context: PageParams): Promise<Metadata> {
 }
 
 export default async function Page(context: PageParams) {
-  const slug = context.params.slug || "/";
+  const slug = "/";
   const [page, settings] = await Promise.all([getPage(slug), getSettings()]);
   if (!page) {
     notFound();

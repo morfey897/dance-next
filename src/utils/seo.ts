@@ -2,9 +2,10 @@ import { PageType } from "@/models/page";
 import { SettingsType } from "@/models/settings";
 import { Metadata } from "next";
 import { urlFor } from "@/lib/sanity";
-import { locales } from "@/i18n.config";
+import { defaultLocale, locales } from "@/i18n.config";
 import { getPathname, getLocale } from '@/headers';
 import { findImage } from "./filter";
+import { replaceLocale } from "./nav";
 
 export const getTitle = (pageTitle: string, rootTitle?: String) => [(pageTitle || "").trim(), (rootTitle || "").trim()].filter(a => !!a).join(" | ");
 
@@ -16,7 +17,7 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
   const alternatives = locales
     .filter(lang => lang != locale)
     .reduce((inc: Record<string, string>, lang) => {
-      inc[lang] = pathname.replace(`/${locale}`, `/${lang}`);
+      inc[lang] = replaceLocale(pathname, lang);
       return inc;
     }, {});
 

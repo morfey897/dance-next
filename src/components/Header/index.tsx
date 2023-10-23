@@ -7,12 +7,13 @@ import Link from "next/link";
 import { AssetType, CTAType } from "@/models/_default";
 import CTA from "@/components/elements/CTA";
 import { useLocale } from "@/components/hooks/useLocale";
-import { locales } from "@/i18n.config";
+import { LOCALE_COOKIE, defaultLocale, locales } from "@/i18n.config";
 import { useTranslation } from "@/components/hooks/useTranslation";
 import dictionary from "@/i18n/language";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import staticLogo from "../../../public/assets/logo.png";
+import { replaceLocale } from "@/utils/nav";
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -74,6 +75,14 @@ function Languages() {
   const locale = useLocale();
   const pathname = usePathname();
 
+  const onClick = (newLocale: string) => {
+    // set cookie for next-i18n-router
+    const days = 30;
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${LOCALE_COOKIE}=${newLocale};expires=${date.toUTCString()};path=/`;
+  };
+
   return <div className="relative group">
     <button name="language" className="flex items-baseline gap-x-1">
       <LangTranslate lang={locale} short />
@@ -81,10 +90,10 @@ function Languages() {
 
     <ul className="absolute top-full right-0 -translate-y-2 transition-all invisible opacity-0 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 bg-black bg-opacity-60 p-2.5 space-y-4 rounded-sm">
       {
-        locales.map((toLang) => (
-          toLang != 'ru' && <li key={toLang} className="text-center">
-            <Link href={pathname.replace(`/${locale}`, `/${toLang}`)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLang === locale && 'text-gray-600 pointer-events-none')}>
-              <LangTranslate lang={toLang} className={clsx(locale === toLang && "animate-pulse")} />
+        locales.filter(locale => locale != 'ru').map((toLocale) => (
+          <li key={toLocale} className="text-center">
+            <Link href={replaceLocale(pathname, toLocale)} onClick={() => onClick(toLocale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLocale === locale && 'text-gray-600 pointer-events-none')}>
+              <LangTranslate lang={toLocale} className={clsx(locale === toLocale && "animate-pulse")} />
             </Link>
           </li>
         ))
@@ -103,8 +112,8 @@ function Header({ logo, navigation }: { logo: AssetType | undefined; navigation:
   })}>
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
-        <a aria-label={'home page'} href={`/${locale}`}>
-          {!!logo ? <Asset asset={logo} alt="home page" /> : <Image {...staticLogo} alt=""/>}
+        <a aria-label={'home page'} href={`/${locale === defaultLocale ? "" : `${locale}/`}`}>
+          {!!logo ? <Asset asset={logo} alt="home page" /> : <Image {...staticLogo} alt="" />}
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
           <div className="block md:hidden">
