@@ -1,0 +1,14 @@
+{
+  "en": {
+    "headline": "Something went wrong!",
+    "subheadline": "Try again"
+  },
+  "ru": {
+    "headline": "Упс... что-то пошло не так",
+    "subheadline": "Попробовать еще"
+  },
+  "uk": {
+    "headline": "Упс... щось пішло не так",
+    "subheadline": "Спробувати ще"
+  }
+}

@@ -1,5 +1,4 @@
 import { DefaultProps, AssetType, GROQ_ASSET } from "./_default";
-import type { I18nType } from "@/types/i18n";
 
 export const GROQ_PHONE = 'code, number';
 export type PhoneType = {
@@ -47,7 +46,6 @@ export type SettingsType = {
   phones: Array<PhoneType>;
   socials: Array<SocialType>;
   address: AddressType;
-  _i18n: I18nType;
 }
 
 type SettingsProps = {

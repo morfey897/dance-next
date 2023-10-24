@@ -5,10 +5,11 @@ import { useMemo } from "react";
 import clsx from "clsx";
 import type { GridState } from "./types";
 import { useTranslation } from "@/components/hooks/useTranslation";
+import dictionary from "@/i18n/shedule.json";
 
 function ChangeDate({ onNext, onPrev, onNow, state, className }: { onNext: React.MouseEventHandler; onPrev: React.MouseEventHandler; onNow: React.MouseEventHandler; state: GridState; } & React.HTMLProps<HTMLDivElement>) {
 
-  const t = useTranslation('shedule');
+  const t = useTranslation(dictionary);
 
   const showToday = useMemo(() => (
     compareAsc(state.now, state.dates[0]) <= 0 || compareAsc(state.dates[state.dates.length - 1], state.now) <= 0

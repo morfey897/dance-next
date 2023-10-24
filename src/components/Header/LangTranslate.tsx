@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslation } from "@/components/hooks/useTranslation";
+import dictionary from "@/i18n/language.json";
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -31,8 +32,7 @@ const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> =
 }
 
 function LangTranslate({ lang, short, ...props }: { lang: string; short?: boolean; } & React.HTMLAttributes<HTMLOrSVGElement>) {
-  const t = useTranslation('language');
-  // const abr = useTranslation(`${lang}.abr`);
+  const t = useTranslation(dictionary);
   const Icon = ICONS[lang];
   return <>
     {short ? t(`${lang}.abr`) : t(`${lang}.title`)} {!!Icon && <Icon height={12} {...props} />}

@@ -6,10 +6,11 @@ import type { GridState } from "./types";
 import { Fragment } from "react";
 import { capitalize } from "@/utils/str";
 import { useTranslation } from "@/components/hooks/useTranslation";
+import dictionary from "@/i18n/shedule.json";
 
 function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (d: Date) => void; } & React.HTMLProps<HTMLDivElement>) {
 
-  const t = useTranslation('shedule');
+  const t = useTranslation(dictionary);
 
   return <nav className={clsx("sticky top-0 z-30 bg-black grid gap-2 md:border-b-2 border-b-pnk-200 py-4 md:py-6 items-end", {
     'grid-cols-7 md:grid-cols-8': state.dates.length === 7,

@@ -1,0 +1,44 @@
+{
+  "uk": {
+    "uk": {
+      "title": "Українська",
+      "abr": "Укр"
+    },
+    "ru": {
+      "title": "Язык",
+      "abr": "Мова"
+    },
+    "en": {
+      "title": "English",
+      "abr": "Eng"
+    }
+  },
+  "en": {
+    "uk": {
+      "title": "Українська",
+      "abr": "Укр"
+    },
+    "ru": {
+      "title": "Язык",
+      "abr": "Мова"
+    },
+    "en": {
+      "title": "English",
+      "abr": "Eng"
+    }
+  },
+  "ru": {
+    "uk": {
+      "title": "Українська",
+      "abr": "Укр"
+    },
+    "ru": {
+      "title": "Язык",
+      "abr": "Мова"
+    },
+    "en": {
+      "title": "English",
+      "abr": "Eng"
+    }
+  }
+}

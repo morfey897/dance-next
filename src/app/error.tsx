@@ -2,10 +2,11 @@
 
 import { useEffect } from 'react';
 import { useTranslation } from '@/components/hooks/useTranslation';
-import Headline from '@/components/elements/Headline';
 import Article from '@/components/elements/Article';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import dictionary from '@/i18n/error-copy.json';
+import Heading from '@/components/elements/Headline/Heading';
 
 export default function Error({
   error,
@@ -15,19 +16,19 @@ export default function Error({
   reset: () => void
 }) {
 
-  const t = useTranslation('error');
+
+  const t = useTranslation(dictionary);
 
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error)
   }, [error])
 
-  console.log('ERRORR_PAGE');
   return (<>
     <Header settings={undefined} navigation={undefined} />
     <main className={'overflow-hidden'}>
       <Article effect={{ x: 'left', y: 'center' }} className='!pt-20 h-[80vh]'>
-        <Headline headline={t('headline')} className='uppercase text-3xl md:text-7xl text-center'/>
+        <Heading as={'h2'} className='uppercase text-3xl md:text-7xl text-center'>{t('headline')}</Heading>
         <button onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()

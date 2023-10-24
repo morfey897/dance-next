@@ -48,7 +48,6 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "postcss": "8.4.28",
-    "typescript": "5.2.2",
-    "uuid": "^9.0.1"
+    "typescript": "5.2.2"
   }
 }

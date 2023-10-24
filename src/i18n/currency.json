@@ -1,0 +1,44 @@
+{
+  "en": {
+    "UAH": {
+      "symbol": "₴",
+      "abr": "uah."
+    },
+    "USD": {
+      "symbol": "$",
+      "abr": "usd."
+    },
+    "EUR": {
+      "symbol": "€",
+      "abr": "eur."
+    }
+  },
+  "uk": {
+    "UAH": {
+      "symbol": "₴",
+      "abr": "грн."
+    },
+    "USD": {
+      "symbol": "$",
+      "abr": "дол."
+    },
+    "EUR": {
+      "symbol": "€",
+      "abr": "євр."
+    }
+  },
+  "ru": {
+    "UAH": {
+      "symbol": "₴",
+      "abr": "грн."
+    },
+    "USD": {
+      "symbol": "$",
+      "abr": "дол."
+    },
+    "EUR": {
+      "symbol": "€",
+      "abr": "евр."
+    }
+  }
+}

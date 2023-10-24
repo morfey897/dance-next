@@ -9,7 +9,6 @@ import Grid from "./Grid";
 import type { GridState, DateAction, EventType } from "./types";
 import useSWR from 'swr';
 import { toDate } from "@/utils/date";
-import { I18Provider } from "@/components/hooks/useTranslation";
 
 import { useInView } from 'react-intersection-observer';
 import { useLocale } from "@/components/hooks/useLocale";
@@ -119,9 +118,7 @@ function ClientWrapper({ settings }: { settings: SettingsType }) {
   });
 
   return <div ref={ref}>
-    {inView && <I18Provider value={settings._i18n}>
-      <InnerGrid />
-    </I18Provider>}
+    {inView && <InnerGrid />}
   </div>;
 }
 

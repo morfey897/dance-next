@@ -14,3 +14,5 @@ export function capitalize(str: string | undefined) {
 }
 
 export const joinPath = (splitter: string, ...list: Array<string | number | undefined | null>) => list.filter(Boolean).join(splitter).replace(new RegExp(`\\${splitter}{2,}`, 'g'), splitter);
+
+export const matchDictionary = (token: string, dictionary?: Record<string, string>, options?: Object) => dictionary && dictionary[token] || token;
