@@ -23,6 +23,16 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
 
   return {
     title: getTitle(page?.title, settings?.title),
+    applicationName: process.env.NEXT_PUBLIC_TITLE,
+    viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover',
+    appleWebApp: {
+      capable: true,
+      title: process.env.NEXT_PUBLIC_TITLE,
+      statusBarStyle: 'default',
+    },
+    formatDetection: {
+      telephone: false,
+    },
     description: page?.description || "",
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
     openGraph: {
@@ -41,7 +51,7 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
       { rel: 'icon', url: '/assets/favicon-32x32.png', sizes: '32x32' },
       { rel: 'icon', url: '/assets/favicon-16x16.png', sizes: '16x16' },
     ],
-    manifest: '/site.webmanifest',
+    manifest: '/manifest.json',
   };
 }
 
