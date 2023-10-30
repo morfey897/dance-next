@@ -1,14 +1,14 @@
-const withPWAInit = require("next-pwa");
+const withPWAInit = require("@ducanh2912/next-pwa");
 
 // const withBundleAnalyzer = require("@next/bundle-analyzer")({
 //   enabled: process.env.ANALYZE === "true",
 // });
 
 /** @type {import('next-pwa').PWAConfig} */
-const withPWA = withPWAInit({
+const withPWA = withPWAInit.default({
   dest: 'public',
   fallbacks: {
-    document: 'app/~offline/page.tsx'
+    document: "/~offline",
   }
 })
 

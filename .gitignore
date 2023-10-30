@@ -38,6 +38,7 @@ next-env.d.ts
 sanity.json
 
 #PWA
+public/fallback-*.js
 **/public/sw.js
 **/public/workbox-*.js
 **/public/worker-*.js
