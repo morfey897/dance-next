@@ -7,7 +7,7 @@ import { AssetType } from "@/models/_default";
 
 function Item({ asset, className, ...props }: { asset: AssetType } & React.HTMLProps<HTMLDivElement>) {
 
-  const headline = asset.caption ?? asset.alt;
+  const headline = asset.alt || "";
   return <div className={clsx('relative w-full h-full', className)} {...props}>
     <Asset asset={asset} alt={headline} className="[&>img]:object-cover [&>img]:w-[inherit] [&>img]:h-[inherit] w-[inherit] h-[inherit]" />
     {!!headline && <div className="text-sm absolute bottom-0 left-0 right-0 bg-[#161616]">

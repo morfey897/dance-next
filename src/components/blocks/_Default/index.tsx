@@ -13,7 +13,7 @@ function DefaultBlock({ headline, body, anchor, callToAction, images }: SectionT
     className="text-center pt-[74px] pb-[124px] md:pt-[274px] md:pb-[270px]"
     effect={{ x: "left" }}
   >
-    {images?.map((bgImage) => <Asset key={bgImage._id} asset={bgImage} alt={bgImage.alt || bgImage.caption} className="[&>img]:h-full [&>img]:w-full" />)}
+    {images?.map((bgImage) => <Asset key={bgImage._id} asset={bgImage} alt={bgImage.alt} className="[&>img]:h-full [&>img]:w-full" />)}
     <div className="text-center">
       <Headline headline={headline} className="text-4xl md:text-6xl uppercase text-center">
         <RenderHTML body={body} className='text-sm md:text-lg mt-7 max-w-screen-lg m-auto' />

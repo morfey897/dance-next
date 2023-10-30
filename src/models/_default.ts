@@ -31,14 +31,12 @@ export type CTAType = {
   externalUrl?: string;
 }
 
-export const GROQ_ASSET = `_id, 
-  "caption": coalesce(caption[$locale], caption[$defaultLocale]),
+export const GROQ_ASSET = `_id,
   "alt": coalesce(alt[$locale], alt[$defaultLocale]),
   tags[]->{${GROQ_TAG}}, 
   image`;
 export type AssetType = {
   _id: string;
-  caption: string;
   alt: string;
   tags?: Array<TagType>;
   image: SanityImageSource;

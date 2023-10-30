@@ -12,7 +12,6 @@ function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } &
         types: {
           image: ({ value }) => <Asset asset={{
             _id: '',
-            caption: '',
             alt: '',
             image: value,
           }} />
