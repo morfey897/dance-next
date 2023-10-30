@@ -30,7 +30,7 @@ function Languages() {
       {
         locales.filter(locale => locale != 'ru').map((toLocale) => (
           <li key={toLocale} className="text-center">
-            <Link href={replaceLocale(pathname, toLocale)} onClick={() => onClick(toLocale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLocale === locale && 'text-gray-600 pointer-events-none')}>
+            <Link replace href={replaceLocale(pathname, toLocale)} onClick={() => onClick(toLocale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLocale === locale && 'text-gray-600 pointer-events-none')}>
               <LangTranslate lang={toLocale} className={clsx(locale === toLocale && "animate-pulse")} />
             </Link>
           </li>
