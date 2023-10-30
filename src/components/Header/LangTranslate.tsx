@@ -2,6 +2,7 @@
 
 import { useTranslation } from "@/components/hooks/useTranslation";
 import dictionary from "@/i18n/language.json";
+import LoadingIndicator from "@/components/elements/LoadingIndicator";
 
 const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
@@ -31,12 +32,14 @@ const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> =
     </svg>)
 }
 
-function LangTranslate({ lang, short, ...props }: { lang: string; short?: boolean; } & React.HTMLAttributes<HTMLOrSVGElement>) {
+function LangTranslate({ lang, short, transition }: { lang: string; short?: boolean; transition?: boolean }) {
   const t = useTranslation(dictionary);
   const Icon = ICONS[lang];
-  return <>
-    {short ? t(`${lang}.abr`) : t(`${lang}.title`)} {!!Icon && <Icon height={12} {...props} />}
-  </>;
+  return <span className="flex items-baseline space-x-1">
+    <span>{short ? t(`${lang}.abr`) : t(`${lang}.title`)}</span>
+    {!!Icon && !transition && <Icon height={12} />}
+    {transition && <LoadingIndicator className="scale-50 w-4" />}
+  </span>;
 }
 
 export default LangTranslate;

@@ -1,4 +1,4 @@
-function Indicator(props: React.SVGProps<SVGSVGElement>) {
+function IngIndicator(props: React.SVGProps<SVGSVGElement>) {
   return <svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#fff" {...props}>
     <circle cx="15" cy="15" r="15">
       <animate attributeName="r" from="15" to="15"
@@ -33,4 +33,4 @@ function Indicator(props: React.SVGProps<SVGSVGElement>) {
   </svg>;
 }
 
-export default Indicator;
+export default IngIndicator;
