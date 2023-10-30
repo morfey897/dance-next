@@ -13,11 +13,11 @@ const GROQ_SECTION = `_id,
 export type SectionType = {
   _id: string;
   headline: string;
-  menuName: string;
+  menuName?: string;
   anchor?: TagType,
-  wrapper: WrapperType,
+  wrapper?: WrapperType,
   images?: Array<AssetType>;
-  body?: PortableTextBlock;
+  body?: PortableTextBlock | string;
   callToAction?: CTAType;
   divisions?: Array<{
     _id: string;

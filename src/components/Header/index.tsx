@@ -26,7 +26,7 @@ function Header({ settings, navigation }: { settings: SettingsType | undefined; 
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
         <a aria-label={'home page'} href={`/${locale === defaultLocale ? "" : `${locale}/`}`}>
-          {!!logo ? <Asset asset={logo} alt="home page" /> : <Image {...staticLogo} alt="" />}
+          {!!logo ? <Asset asset={logo} alt="home page" /> : <Image src={staticLogo.src} height={staticLogo.height} width={staticLogo.width} alt="" />}
         </a>
         <div className="flex items-center gap-x-1 flex-row-reverse md:flex-row">
           <div className="block md:hidden">

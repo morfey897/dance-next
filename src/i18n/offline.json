@@ -1,0 +1,17 @@
+{
+  "en": {
+    "headline": "You seem to have no Internet...",
+    "subheadline": "It is better to call the studio at the phone number.",
+    "cta": "To call"
+  },
+  "ru": {
+    "headline": "Кажется у вас отсутствует Интернет...",
+    "subheadline": "Лучше позвоните в студию по телефону.",
+    "cta": "Позвонить"
+  },
+  "uk": {
+    "headline": "Здається у вас відсутній Інтернет...",
+    "subheadline": "Краще зателефонуйте до студії за номером телефона.",
+    "cta": "Зателефонувати"
+  }
+}

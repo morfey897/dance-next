@@ -4,33 +4,36 @@ import Asset from './Asset';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock } & React.HTMLProps<HTMLDivElement>) {
+function RenderHTML({ body, className, ...rest }: { body?: PortableTextBlock | string } & React.HTMLProps<HTMLDivElement>) {
   return body ? <div className={clsx('block-content', className)} {...rest}>
-    <PortableText
-      value={body}
-      components={{
-        types: {
-          image: ({ value }) => <Asset asset={{
-            _id: '',
-            alt: '',
-            image: value,
-          }} />
-        },
-        marks: {
-          strong: ({ children }) => (<strong>
-            {children}
-          </strong>),
-          em: ({ children }) => (<em>
-            {children}
-          </em>),
-          link: ({ children, value }) => (
-            <Link href={value.href} {...(!value.href.startsWith('/') ? { rel: 'noreferrer noopener', target: "_blank" } : {})} className='underline text-pink-400 hover:text-slate-300'>
+    {typeof body === 'string' ?
+      <p>{body}</p> :
+      <PortableText
+        value={body}
+        components={{
+          types: {
+            image: ({ value }) => <Asset asset={{
+              _id: '',
+              alt: '',
+              image: value,
+            }} />
+          },
+          marks: {
+            strong: ({ children }) => (<strong>
               {children}
-            </Link>
-          ),
-        }
-      }}
-    />
+            </strong>),
+            em: ({ children }) => (<em>
+              {children}
+            </em>),
+            link: ({ children, value }) => (
+              <Link href={value.href} {...(!value.href.startsWith('/') ? { rel: 'noreferrer noopener', target: "_blank" } : {})} className='underline text-pink-400 hover:text-slate-300'>
+                {children}
+              </Link>
+            ),
+          }
+        }}
+      />
+    }
   </div> : null;
 }
 

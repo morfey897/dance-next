@@ -11,7 +11,7 @@ import { SettingsType } from "@/models/settings";
 import Link from "next/link";
 
 // address, phones, socials, 
-function Contacts({ headline, images, anchor, body, settings }: { settings: SettingsType } & SectionType) {
+function Contacts({ headline, images, anchor, body, settings }: { settings?: SettingsType } & SectionType) {
 
   const { phones, socials, address } = settings || {};
 

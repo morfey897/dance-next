@@ -9,6 +9,35 @@ import { replaceLocale } from "./nav";
 
 export const getTitle = (pageTitle: string, rootTitle?: String) => [(pageTitle || "").trim(), (rootTitle || "").trim()].filter(a => !!a).join(" | ");
 
+export const getLayoutMetadata = (title?: string, description?: string): Metadata => {
+
+  return {
+    title: title,
+    description: description,
+    applicationName: process.env.NEXT_PUBLIC_TITLE,
+    viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover',
+    appleWebApp: {
+      capable: true,
+      title: process.env.NEXT_PUBLIC_TITLE,
+      statusBarStyle: 'default',
+    },
+    formatDetection: {
+      telephone: false,
+    },
+    
+    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
+    themeColor: '#161616',
+    icons: [
+      { rel: 'apple-touch-icon', url: '/assets/apple-touch-icon.png', sizes: '180x180' },
+      { rel: 'mask-icon', url: '/assets/safari-pinned-tab.svg', color: '#161616' },
+      { rel: 'icon', url: '/assets/favicon-32x32.png', sizes: '32x32' },
+      { rel: 'icon', url: '/assets/favicon-16x16.png', sizes: '16x16' },
+    ],
+    manifest: '/manifest.json',
+  };
+}
+
+
 export const getMetadata = (page: PageType, settings: SettingsType): Metadata => {
 
   const pathname = getPathname();
@@ -22,36 +51,16 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
     }, {});
 
   return {
-    title: getTitle(page?.title, settings?.title),
-    applicationName: process.env.NEXT_PUBLIC_TITLE,
-    viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover',
-    appleWebApp: {
-      capable: true,
-      title: process.env.NEXT_PUBLIC_TITLE,
-      statusBarStyle: 'default',
-    },
-    formatDetection: {
-      telephone: false,
-    },
-    description: page?.description || "",
-    metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
     openGraph: {
       title: page?.ogTitle || "",
       description: page?.ogDescription || "",
       images: [urlFor(page?.ogImage?.image).url()],
     },
-    themeColor: '#161616',
     alternates: {
       canonical: pathname,
       languages: alternatives
     },
-    icons: [
-      { rel: 'apple-touch-icon', url: '/assets/apple-touch-icon.png', sizes: '180x180' },
-      { rel: 'mask-icon', url: '/assets/safari-pinned-tab.svg', color: '#161616' },
-      { rel: 'icon', url: '/assets/favicon-32x32.png', sizes: '32x32' },
-      { rel: 'icon', url: '/assets/favicon-16x16.png', sizes: '16x16' },
-    ],
-    manifest: '/manifest.json',
+    ...getLayoutMetadata(page?.title || settings?.title,  page?.description || ""),
   };
 }
 

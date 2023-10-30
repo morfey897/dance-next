@@ -1,0 +1,17 @@
+{
+  "en": {
+    "headline": "It seems you got lost...",
+    "subheadline": "It is better to return to the main page.",
+    "cta": "To home page"
+  },
+  "ru": {
+    "headline": "Кажется вы заблудились...",
+    "subheadline": "Лучше вернуться на главную страницу.",
+    "cta": "На головну сторінку"
+  },
+  "uk": {
+    "headline": "Здається ви заблукали...",
+    "subheadline": "Краще повернутись на головну сторінку.",
+    "cta": "На главную"
+  }
+}

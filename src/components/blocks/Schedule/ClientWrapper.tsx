@@ -110,7 +110,7 @@ function InnerGrid() {
   </>
 }
 
-function ClientWrapper({ settings }: { settings: SettingsType }) {
+function ClientWrapper({ settings }: { settings?: SettingsType }) {
 
   const { ref, inView } = useInView({
     triggerOnce: true,

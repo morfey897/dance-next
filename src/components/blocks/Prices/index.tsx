@@ -18,7 +18,7 @@ async function getPrices(ids: Array<string> | undefined) {
   );
 }
 
-async function Prices({ headline, anchor, body, divisions, settings }: SectionType & { settings: SettingsType }) {
+async function Prices({ headline, anchor, body, divisions, settings }: SectionType & { settings?: SettingsType }) {
 
   const ids = divisions?.map(({ _id }) => _id) || [];
   const prices = (await getPrices(ids)).sort((a, b) => ids.indexOf(a._id) - ids.indexOf(b._id));

@@ -3,7 +3,7 @@ import Factory from '@/components/blocks';
 import Footer from "@/components/Footer";
 import clsx from 'clsx';
 import { useTranslation } from '@/components/hooks/useServerTranslation';
-import dictionary from "@/i18n/not-found.json";
+import dictionary from "@/i18n/offline.json";
 import { getLocale } from "@/headers";
 
 export default async function Page() {
@@ -21,12 +21,8 @@ export default async function Page() {
         },
         body: t('subheadline'),
         callToAction: {
-          title: t("cta"),
-          internalUrl: {
-            page: {
-              slug: "/"
-            }
-          }
+          title: t("cta") + " " + "(63) 863 59 92",
+          externalUrl: `tel:+380(63) 863 59 92`
         }
       }]} settings={undefined} />
     </main >

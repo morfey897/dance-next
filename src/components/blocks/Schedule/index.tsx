@@ -6,7 +6,7 @@ import ClientWrapper from "./ClientWrapper";
 import type { SectionType } from "@/models/page";
 import type { SettingsType } from "@/models/settings";
 
-function Schedule({ headline, anchor, body, settings }: SectionType & { settings: SettingsType }) {
+function Schedule({ headline, anchor, body, settings }: SectionType & { settings?: SettingsType }) {
 
   return <Article anchor={anchor?.tag}>
     <Section animate="b-t">
