@@ -7,11 +7,13 @@ import { LOCALE_COOKIE, locales } from "../../../i18n.config";
 import { usePathname } from "next/navigation";
 import { replaceLocale } from "@/utils/nav";
 import LangTranslate from "./LangTranslate";
+import { useRouter } from "next/navigation";
 
 function Languages() {
 
   const locale = useLocale();
   const pathname = usePathname();
+  const router = useRouter();
 
   const onClick = (newLocale: string) => {
     // set cookie for next-i18n-router
@@ -19,6 +21,10 @@ function Languages() {
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     document.cookie = `${LOCALE_COOKIE}=${newLocale};expires=${date.toUTCString()};path=/`;
+
+
+    router.push(replaceLocale(pathname, newLocale));
+    router.refresh();
   };
 
   return <div className="relative group">
@@ -30,9 +36,9 @@ function Languages() {
       {
         locales.filter(locale => locale != 'ru').map((toLocale) => (
           <li key={toLocale} className="text-center">
-            <Link replace href={replaceLocale(pathname, toLocale)} onClick={() => onClick(toLocale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLocale === locale && 'text-gray-600 pointer-events-none')}>
+            <button onClick={() => onClick(toLocale)} className={clsx("flex items-baseline justify-center gap-x-1  hover:text-slate-200", toLocale === locale && 'text-gray-600 pointer-events-none')}>
               <LangTranslate lang={toLocale} className={clsx(locale === toLocale && "animate-pulse")} />
-            </Link>
+            </button>
           </li>
         ))
       }
