@@ -4,21 +4,10 @@ import Headline from "@/components/elements/Headline";
 import RenderHTML from "@/components/elements/RenderHTML";
 
 import { SectionType } from "@/models/page";
-import { requestContent } from "@/lib/sanity.server";
-import { DirectionType, query as queryDirections } from "@/models/direction";
+import { getDirections } from "@/data/external.server";
 
 import ClientWrapper from "./ClientWrapper";
 import Section from "@/components/elements/Section";
-
-async function getDirections(ids: Array<string> | undefined) {
-  if (!ids || ids.length === 0) return [];
-  return await requestContent<Array<DirectionType>>(
-    queryDirections({
-      ids
-    }),
-    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
-  );
-}
 
 async function Directions({ headline, anchor, divisions, body }: SectionType) {
 

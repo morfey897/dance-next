@@ -3,20 +3,10 @@ import Article from "@/components/elements/Article";
 import Section from "@/components/elements/Section";
 import RenderHTML from "../../elements/RenderHTML";
 import { SectionType } from "@/models/page";
-import { requestContent } from "@/lib/sanity.server";
-import { PriceType, query as queryPrices } from "@/models/price";
+import { PriceType } from "@/models/price";
 import { SettingsType } from "@/models/settings";
-import ClientWrapper from "./ClientWrapper"
-
-async function getPrices(ids: Array<string> | undefined) {
-  if (!ids || ids.length === 0) return [];
-  return await requestContent<Array<PriceType>>(
-    queryPrices({
-      ids
-    }),
-    process.env.NODE_ENV === 'development' ? { cache: 'no-cache' } : { cache: 'force-cache', next: { revalidate: 10 * 60 } }
-  );
-}
+import ClientWrapper from "./ClientWrapper";
+import { getPrices } from "@/data/external.server";
 
 async function Prices({ headline, anchor, body, divisions, settings }: SectionType & { settings?: SettingsType }) {
 
