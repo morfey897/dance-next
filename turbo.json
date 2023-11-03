@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"]
+    },
+
+    "client-web#build": {
+      "outputs": [".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_*", "!NEXT_PUBLIC_GIT_*", "NEXT_PRIVATE_*"]
+    },
+
+    "cms#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^build"],
+      "env": ["SANITY_STUDIO_*"]
+    },
+
+    "lint": {},
+    "test": {},
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    }
+  }
+}

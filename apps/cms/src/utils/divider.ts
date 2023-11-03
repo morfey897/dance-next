@@ -1,0 +1,1 @@
+export const getDivider = () => ({ type: 'divider', name: '' });

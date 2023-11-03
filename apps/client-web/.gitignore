@@ -48,6 +48,3 @@ public/fallback-*.js
 
 #turbo
 .turbo
-
-#tsup
-dist
