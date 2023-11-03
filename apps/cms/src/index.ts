@@ -12,6 +12,7 @@ import { getDivider } from "./utils/divider";
 export const schemaTypes = [root, ...internal, getDivider(), ...base, getDivider(), ...settings];
 
 export const deskStructure = (S: StructureBuilder) => {
+  console.log('Monorepo');
 
   const documents = S.documentTypeListItems();
 
