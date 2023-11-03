@@ -1,7 +1,7 @@
 
 function Anchor({ id }: { id: string }) {
   return <div className='relative'>
-    <span id={id} data-anchor={true} className="absolute top-[-74px] invisible">{id}</span>
+    <span id={id} data-anchor={true} className="absolute top-[-74px] sr-only">{id}</span>
   </div>
 }
 

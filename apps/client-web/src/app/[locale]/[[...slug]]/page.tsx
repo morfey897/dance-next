@@ -37,7 +37,7 @@ export default async function Page(context: PageParams) {
 
   return (<>
     <Header settings={settings} navigation={nav} />
-    <main className={clsx('overflow-hidden')}>
+    <main>
       <Factory sections={page.sections} settings={settings} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(getJSON_LD(settings)) }} />
     </main>

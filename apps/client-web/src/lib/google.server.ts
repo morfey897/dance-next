@@ -43,7 +43,7 @@ export async function events({ start: st, end: ed }: { start: string | Date; end
     const start = (typeof st === 'string' ? st : st.toISOString()).split("T")[0];
     const end = (typeof ed === 'string' ? ed : ed.toISOString()).split("T")[0];
 
-    if (!start || !end || !process.env.GOOGLE_SERVICE_ADDRESS) throw new Error('Undefined env');
+    if (!start || !end || !process.env.NEXT_PRIVATE_GOOGLE_SERVICE_ADDRESS) throw new Error('Undefined env');
     const startDateTime = `${start}T00:00:01Z`;
     const endDateTime = `${end}T23:59:59Z`;
 
@@ -52,7 +52,7 @@ export async function events({ start: st, end: ed }: { start: string | Date; end
       private_key: string;
       private_key_id: string;
       token_uri: string
-    } = JSON.parse(process.env.GOOGLE_SERVICE_ADDRESS);
+    } = JSON.parse(process.env.NEXT_PRIVATE_GOOGLE_SERVICE_ADDRESS);
 
     const instance = calendar({
       version: 'v3', auth: new JWT({
@@ -63,7 +63,7 @@ export async function events({ start: st, end: ed }: { start: string | Date; end
     });
 
     const response = await instance.events.list({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      calendarId: process.env.NEXT_PRIVATE_GOOGLE_CALENDAR_ID,
       timeMin: startDateTime,
       timeMax: endDateTime,
     });

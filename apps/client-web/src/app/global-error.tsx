@@ -28,7 +28,7 @@ export default function Error({
   return (<html>
     <body>
       <Header settings={undefined} navigation={undefined} />
-      <main className={'overflow-hidden'}>
+      <main>
         <Article effect={{ x: 'left', y: 'center' }} className='!pt-20 h-[80vh]'>
           <Heading as={'h2'} className='uppercase text-3xl md:text-7xl text-center'>{t('headline')}</Heading>
           <button onClick={

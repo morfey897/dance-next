@@ -17,12 +17,13 @@ function Section({ className, children, render, animate, ...rest }: { animate?: 
   });
 
   return (
-    <section ref={ref} className={clsx('relative', !!animate && 'transition-transform ease-in duration-500',
+    <section ref={ref} className={clsx('relative', !!animate && 'transition-all ease-in duration-500',
       {
+        'opacity-30': !!animate,
         'translate-y-36': animate === 'b-t',
         'translate-x-48': animate === 'r-l',
         '-translate-x-48': animate === 'l-r',
-      }, inView && '!translate-y-0 !translate-x-0', className)} {...rest}>
+      }, inView && '!translate-y-0 !translate-x-0 !opacity-100', className)} {...rest}>
       {children}
       {typeof render === 'function' && render(inView)}
     </section>

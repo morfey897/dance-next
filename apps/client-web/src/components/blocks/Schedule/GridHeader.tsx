@@ -3,19 +3,32 @@
 import clsx from "clsx";
 import { compareAsc, isWeekend, format } from "date-fns";
 import type { GridState } from "./types";
-import { Fragment } from "react";
+import { Fragment, useId } from "react";
 import { capitalize } from "@/utils/str";
 import { useTranslation } from "@/components/hooks/useTranslation";
 import dictionary from "@/i18n/shedule.json";
+import { useInView } from "react-intersection-observer";
+import { EventMitter, EVENT_HEADER } from "@/events";
 
 function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (d: Date) => void; } & React.HTMLProps<HTMLDivElement>) {
 
+  const uuid = useId();
+
   const t = useTranslation(dictionary);
 
-  return <nav className={clsx("sticky top-0 z-30 bg-black grid gap-2 md:border-b-2 border-b-pnk-200 py-4 md:py-6 items-end", {
+  const { ref } = useInView({
+    onChange(inView) {
+      EventMitter.emit(EVENT_HEADER, { uuid, inView });
+    },
+    threshold: 1,
+    delay: 100,
+    initialInView: true,
+  });
+
+  return <nav ref={ref} className={clsx("sticky top-0 z-30 bg-black grid gap-2 md:border-b-2 border-b-pnk-200 py-4 md:py-6 items-end", {
     'grid-cols-7 md:grid-cols-8': state.dates.length === 7,
   })}>
-    <div className="font-medium text-xl text-center hidden md:block overflow-hidden text-ellipsis">
+    <div className="font-medium text-xl text-center hidden md:block text-ellipsis">
       {t('time')}
     </div>
     {
@@ -26,7 +39,7 @@ function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (
         const weekend = isWeekend(date);
         const isActive = compareAsc(state.active, date) === 0;
         return <Fragment key={`day_${date.getTime()}`}>
-          <p className={clsx("hidden md:block font-medium text-center text-base lg:text-xl overflow-hidden text-ellipsis",
+          <p className={clsx("hidden md:block font-medium text-center text-base lg:text-xl text-ellipsis",
             today && '!text-pnk-100',
             past ? 'md:text-[#c7c6c6]' : (weekend && 'text-[#f8bbe3]'))}>
             {capitalize(format(date, "EEEE", { locale: state.locale }))}
@@ -49,7 +62,7 @@ function GridHeader({ state, onSelectDate }: { state: GridState; onSelectDate: (
         </Fragment>;
       })
     }
-  </nav >
+  </nav>;
 }
 
 export default GridHeader;

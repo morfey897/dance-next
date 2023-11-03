@@ -12,7 +12,7 @@ export default async function Page() {
 
   return (<>
     <Header settings={undefined} navigation={[]} />
-    <main className={clsx('overflow-hidden')}>
+    <main>
       <Factory sections={[{
         _id: '_not_found_',
         headline: t('headline'),

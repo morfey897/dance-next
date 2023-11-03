@@ -18,7 +18,9 @@
     "@sanity/client": "^6.4.9",
     "@sanity/image-url": "^1.0.2",
     "clsx": "^2.0.0",
+    "config": "*",
     "date-fns": "^2.30.0",
+    "eventemitter3": "^5.0.1",
     "flat": "^6.0.1",
     "google-auth-library": "^9.1.0",
     "lodash": "^4.17.21",
@@ -31,8 +33,7 @@
     "rrule": "^2.7.2",
     "swr": "^2.2.4",
     "tailwindcss": "^3.3.3",
-    "tailwindcss-hyphens": "^0.1.0",
-    "config": "*"
+    "tailwindcss-hyphens": "^0.1.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^13.5.6",

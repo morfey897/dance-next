@@ -12,6 +12,8 @@ import Navigation from "./Navigation";
 import Languages from "./Languages";
 import { SettingsType } from "@/models/settings";
 import { findImage } from "@/utils/filter";
+import { EventMitter, EVENT_HEADER } from "@/events";
+import { useEffect, useState } from "react";
 
 function Header({ settings, navigation }: { settings: SettingsType | undefined; navigation: Array<CTAType> | undefined }) {
 
@@ -20,8 +22,32 @@ function Header({ settings, navigation }: { settings: SettingsType | undefined; 
 
   const logo = findImage(settings?.images, 'head');
 
-  return <header className={clsx("fixed top-0 z-20 w-full bg-transparent transition-all", {
+  const [show, onShow] = useState(true);
+
+  useEffect(() => {
+
+    const headers = new Set<string>();
+
+    const onView = ({ inView, uuid }: { uuid: string; inView: boolean }) => {
+
+      if (inView) {
+        headers.add(uuid);
+      } else {
+        headers.delete(uuid);
+      }
+
+      onShow(headers.size === 0);
+    };
+
+    EventMitter.on(EVENT_HEADER, onView);
+    return () => {
+      EventMitter.off(EVENT_HEADER, onView);
+    }
+  }, []);
+
+  return <header className={clsx("fixed top-0 z-20 w-full bg-transparent transition-all ease-in duration-500", {
     'backdrop-blur': scrlDetect.percent > 0.01,
+    '-translate-y-[74px]': !show,
   })}>
     <div className="max-w-screen-xl mx-auto py-2.5 px-4">
       <nav className="flex items-center justify-between">
