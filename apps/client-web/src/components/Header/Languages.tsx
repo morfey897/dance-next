@@ -18,11 +18,7 @@ function Languages() {
 
   const onClick = (newLocale: string) => {
     setActive(newLocale);
-    // set cookie for next-i18n-router
-    const days = 30;
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${LOCALE_COOKIE}=${newLocale};expires=${date.toUTCString()};path=/`;
+    document.cookie = `${LOCALE_COOKIE}=${newLocale};path=/`;
 
     router.push(replaceLocale(pathname, newLocale));
     router.refresh();

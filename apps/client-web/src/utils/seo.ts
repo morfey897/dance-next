@@ -24,7 +24,7 @@ export const getLayoutMetadata = (title?: string, description?: string): Metadat
     formatDetection: {
       telephone: false,
     },
-    
+
     metadataBase: new URL(process.env.NEXT_PUBLIC_DOMAIN || ""),
     themeColor: '#161616',
     icons: [
@@ -60,35 +60,39 @@ export const getMetadata = (page: PageType, settings: SettingsType): Metadata =>
       canonical: pathname,
       languages: alternatives
     },
-    ...getLayoutMetadata(page?.title || settings?.title,  page?.description || ""),
+    ...getLayoutMetadata(page?.title || settings?.title, page?.description || ""),
   };
 }
 
-export const getJSON_LD = (props: SettingsType) => ({
-  "@context": "https://schema.org/",
-  "@type": "DanceSchool",
-  "image": urlFor(findImage(props?.images, '!head')?.image).url(),
-  "url": "https://studio-kalipso.com/uk",
-  "name": props?.title,
-  "description": props?.description,
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": [props?.address?.street, props?.address?.building].filter(a => !!a).join(' '),
-    "addressLocality": props?.address?.city,
-    "addressCountry": props?.address?.country,
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": props?.address?.geo?.lat,
-    "longitude": props?.address?.geo?.lng
-  },
-  "telephone": props?.phones[0]?.code + props?.phones[0]?.number,
-  "sameAs": [],
-  "openingHoursSpecification": [{
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    "opens": "09:00",
-    "closes": "21:00"
-  }],
-  "paymentAccepted": ["Готівка", "Кредитна карта"]
-})
+export const getJSON_LD = (props: SettingsType) => {
+
+  const pathname = getPathname();
+  return {
+    "@context": "https://schema.org/",
+    "@type": "DanceSchool",
+    "image": urlFor(findImage(props?.images, '!head')?.image).url(),
+    "url": `${process.env.NEXT_PUBLIC_DOMAIN}${pathname}`,
+    "name": props?.title,
+    "description": props?.description,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": [props?.address?.street, props?.address?.building].filter(a => !!a).join(' '),
+      "addressLocality": props?.address?.city,
+      "addressCountry": props?.address?.country,
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": props?.address?.geo?.lat,
+      "longitude": props?.address?.geo?.lng
+    },
+    "telephone": props?.phones[0]?.code + props?.phones[0]?.number,
+    "sameAs": [],
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "09:00",
+      "closes": "21:00"
+    }],
+    "paymentAccepted": ["Готівка", "Кредитна карта"]
+  };
+}
