@@ -1,0 +1,30 @@
+{
+  "header": {
+    "search": "Search",
+    "settings": "Settings",
+    "sign_out": "Sign out",
+    "root": "Root",
+    "clients": "Clients",
+    "services": "Services",
+    "users": "Users",
+    "products": "Products",
+    "i18n": {
+      "uk": {
+        "title": "Українська",
+        "abr": "Укр"
+      },
+      "ru": {
+        "title": "Русский",
+        "abr": "Рус"
+      },
+      "en": {
+        "title": "English",
+        "abr": "Eng"
+      }
+    },
+    "links": {
+      "cms": "Edit PDKalipso",
+      "site": "PDKalipso"
+    }
+  }
+}

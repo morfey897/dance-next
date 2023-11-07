@@ -12,6 +12,12 @@
       "env": ["NEXT_PUBLIC_*", "!NEXT_PUBLIC_GIT_*", "NEXT_PRIVATE_*"]
     },
 
+    "crm#build": {
+      "outputs": [".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"],
+      "env": ["NEXT_PUBLIC_*", "!NEXT_PUBLIC_GIT_*", "NEXT_PRIVATE_*"]
+    },
+
     "cms#build": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build"],

@@ -1,0 +1,31 @@
+{
+  "header": {
+    "search": "Пошук",
+    "settings": "Налаштування",
+    "sign_out": "Вийти",
+
+    "root": "Головна",
+    "clients": "Клієнти",
+    "services": "Послуги",
+    "users": "Користувачі",
+    "products": "Товари",
+    "i18n": {
+      "uk": {
+        "title": "Українська",
+        "abr": "Укр"
+      },
+      "ru": {
+        "title": "Русский",
+        "abr": "Рус"
+      },
+      "en": {
+        "title": "English",
+        "abr": "Eng"
+      }
+    },
+    "links": {
+      "cms": "Edit PDKalipso",
+      "site": "PDKalipso"
+    }
+  }
+}
