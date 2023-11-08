@@ -4,8 +4,9 @@ import './globals.css';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTheme } from '@/headers';
 import clsx from 'clsx';
+import ThemeProvider from '@/components/Theme/provider';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: `CRM | ${process.env.NEXT_PUBLIC_TITLE}`,
@@ -13,7 +14,6 @@ export const metadata: Metadata = {
     follow: false,
     index: false,
   }
-
 }
 
 export default async function RootLayout({
@@ -33,8 +33,9 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
-      <body className={clsx(inter.className, theme)}>
+    <html lang={locale} className={theme || ''}>
+      <ThemeProvider />
+      <body className={clsx(inter.className, "bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-200")}>
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
         </NextIntlClientProvider>

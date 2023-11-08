@@ -1,8 +1,9 @@
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
-import { DEFAULT_LOCALE, LOCALES, LOCALE_COOKIE, THEME_COOKIE } from "config";
+import { DEFAULT_LOCALE, LOCALES, LOCALE_COOKIE } from "config";
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import * as routes from "@/constants/routes";
 
 type LangType = (typeof LOCALES & undefined);
 
@@ -22,6 +23,18 @@ export function middleware(request: NextRequest) {
   const locale = LOCALES.includes(cookieValue as LangType) ? cookieValue : getLocale(request);
 
   let response = NextResponse.next();
+
+  const auth = true;//request.headers.get('Authorization');
+  if (!auth && request.nextUrl.pathname.startsWith(routes.ROOT)) {
+    response = NextResponse.redirect(new URL(routes.AUTH, request.nextUrl.href), {
+      status: 307
+    });
+  } else if (auth && request.nextUrl.pathname === routes.AUTH) {
+    response = NextResponse.redirect(new URL(routes.ROOT, request.nextUrl.href), {
+      status: 307
+    });
+  }
+
   if (cookieValue != locale) {
     const setCookies = response.headers.get('set-cookie');
     response.headers.set('set-cookie', [`${LOCALE_COOKIE}=${locale};path=/`, setCookies]

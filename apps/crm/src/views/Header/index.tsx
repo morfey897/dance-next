@@ -4,12 +4,11 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { HiMenuAlt3, HiX, HiCog, HiLogout } from "react-icons/hi";
 import { PiGraphBold } from "react-icons/pi";
-import ThemeSwithcer from './ThemeSwithcer';
+import ThemeSwithcer from '@/components/Theme';
 import DropDown from '@/components/DropDown';
-import * as routes from "@/constants/routes";
 import NavItem from '@/components/NavItem';
 
 function Header() {
@@ -32,7 +31,7 @@ function Header() {
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
             <Link href="/" className='flex items-center gap-2'>
-              <PiGraphBold size={48} className="text-purple-900 dark:text-white" />
+              <PiGraphBold size={48} className="text-gray-800 dark:text-white" />
             </Link>
 
             <div className="mx-10">
@@ -68,15 +67,15 @@ function Header() {
             </div>
 
 
-            <div className="flex items-center mt-4 lg:mt-0 gap-2">
+            <div className="flex items-center mt-4 lg:mt-0 gap-4">
 
               <ThemeSwithcer className='hidden lg:block' />
 
               {/* Desktop version */}
-              <DropDown className='hidden lg:block' size='sm' direction={{ y: 'bottom', x: 'left' }} Element={<>
-                <div className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full">
+              <DropDown className='hidden lg:block' direction={{ y: 'bottom', x: 'left' }} Element={<>
+                <button className="w-8 h-8 overflow-hidden border-2 border-gray-400 rounded-full">
                   <Image width={24} height={24} src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" className="object-cover w-full h-full" alt="avatar" />
-                </div>
+                </button>
               </>}>
                 <div className='px-2 py-4 flex flex-col'>
                   <div className="flex items-center p-3 -mt-2 text-sm text-gray-600 transition-colors duration-300 transform dark:text-gray-300 cursor-default">

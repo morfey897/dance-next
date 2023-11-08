@@ -1,12 +1,5 @@
-'use client';
-import { useLocale, useTranslations } from 'next-intl';
-import { LOCALES, LOCALE_COOKIE } from 'config';
-import React, { useCallback } from 'react';
-import { useRouter } from "next/navigation";
-import NavItem from '../../components/NavItem';
-import DropDown from '@/components/DropDown';
 
-const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
+export const ICONS: Record<string, (props: React.SVGProps<any>) => React.JSX.Element> = {
   uk: (props: React.SVGProps<any>) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" fill="currentColor" {...props}>
       <g fillRule="evenodd" strokeWidth="1pt">
@@ -51,24 +44,4 @@ const CurrentLocale = ({ locale, ...props }: React.SVGProps<any> & { locale: str
   return <ICONS._default {...props} />;
 }
 
-function LocaleSwitcher() {
-  const t = useTranslations('header');
-  const locale = useLocale();
-  const router = useRouter();
-
-  const onChangeLocale = useCallback((newLocale: string) => {
-    document.cookie = `${LOCALE_COOKIE}=${newLocale};path=/`;
-    router.refresh();
-  }, []);
-
-  return <DropDown size="md" direction={{ y: 'top', x: 'right' }} className="inline-block m-auto md:m-0"
-    Element={<button className="px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700">
-      <CurrentLocale locale={locale} className="w-8 h-8 rounded-full" fill="currentColor" />
-    </button>}>
-    <div className='px-2 py-4 flex flex-col'>
-      {LOCALES.map((locale) => <NavItem key={locale} className={'[&>span]:!block [&>span]:text-sm [&>svg]:rounded-full'} onClick={() => onChangeLocale(locale)} Icon={ICONS[locale]} label={t(`i18n.${locale}.title`)} />)}
-    </div>
-  </DropDown>;
-}
-
-export default LocaleSwitcher;
+export default CurrentLocale;

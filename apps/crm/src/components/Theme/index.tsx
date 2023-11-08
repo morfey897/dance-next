@@ -1,23 +1,25 @@
 'use client';
 import { useCallback, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { THEME_COOKIE } from 'config';
 import { HiMoon, HiSun } from "react-icons/hi";
 import clsx from "clsx";
+import { THEME_COOKIE } from "@packages/config/dist";
 
 type ThemeType = 'dark' | 'light' | 'none';
 
-function ThemeSwithcer({className, ...rest}:React.HTMLAttributes<HTMLDivElement>) {
-
-  const router = useRouter();
+function ThemeSwithcer({ className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
 
   const [theme, setTheme] = useState<ThemeType>('none');
 
+  // console.log('document.documentElement.classList', document?.documentElement?.classList);
 
   useEffect(() => {
-    setTheme(document!.querySelector("body")!.classList.contains('dark') ? 'dark' : 'light');
+    const classList = document.documentElement.classList;
+    if (classList.contains('dark')) {
+      setTheme('dark');
+    } else if (classList.contains('light')) {
+      setTheme('light');
+    }
   }, []);
-
 
   const onToggleDarkMode = useCallback(() => {
     let newTheme: ThemeType = 'none';
@@ -27,10 +29,18 @@ function ThemeSwithcer({className, ...rest}:React.HTMLAttributes<HTMLDivElement>
       newTheme = 'dark';
     }
     if (newTheme != 'none') {
+      const classList = document.documentElement.classList;
       setTheme(newTheme);
       document.cookie = `${THEME_COOKIE}=${newTheme};path=/`;
+      if (newTheme === 'dark') {
+        classList.remove('light');
+        classList.add('dark');
+      } else {
+        classList.remove('dark');
+        classList.add('light');
+      }
+
     }
-    router.refresh();
   }, [theme]);
 
   return theme === 'none' ?

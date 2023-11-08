@@ -1,3 +1,4 @@
+export const AUTH = '/';
 export const ROOT = '/app';
 export const CLIENTS = '/app/clients';
 export const USERS = '/app/users';

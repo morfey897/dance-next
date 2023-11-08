@@ -4,6 +4,7 @@ export default function Home() {
   return (
     //  ml-0 lg:ml-64
     <div className="flex flex-col items-center justify-between">
+      <h1>DASHBOARD</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent bibendum libero mattis semper cursus. Quisque et facilisis magna. Curabitur velit elit, lacinia eget mattis vulputate, porta eget felis. Fusce sed est leo. Nam id metus ut justo congue molestie vitae vitae magna. Sed dignissim efficitur velit, quis tincidunt ante egestas vel. Donec feugiat magna at sem venenatis bibendum. Maecenas eget rhoncus mi.
 
         Nullam ornare elit neque, et dapibus neque posuere sed. Integer at bibendum turpis. Curabitur ullamcorper arcu a sem lacinia lacinia. Sed mollis nulla nec odio luctus condimentum. Aenean vitae mollis orci. Nunc iaculis tincidunt leo ac accumsan. Suspendisse justo dui, imperdiet eu elit et, semper mattis libero. Cras dictum sem a tellus commodo, sed fringilla ex scelerisque.

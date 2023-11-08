@@ -4,8 +4,8 @@ import { HiUsers, HiCalendar, HiUserCircle, HiHome, HiCog } from "react-icons/hi
 import { HiMiniBuildingStorefront } from "react-icons/hi2"
 import React from 'react';
 import * as routes from "@/constants/routes";
-import NavItem from '../../components/NavItem';
-import LocaleSwitcher from './LocaleSwither';
+import NavItem from '@/components/NavItem';
+import LocaleSwitcher from '@/components/Locale';
 
 function Aside() {
   const t = useTranslations('header');

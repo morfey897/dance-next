@@ -19,7 +19,8 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     remotePatterns: [
-      { hostname: 'images.unsplash.com' }
+      { hostname: 'images.unsplash.com' },
+      { hostname: 'merakiui.com' }
     ]
   }
 }

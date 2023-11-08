@@ -5,8 +5,7 @@ export const getLocale = (): string => {
   return cookies().get(LOCALE_COOKIE)?.value || DEFAULT_LOCALE;
 }
 
-export const getTheme = (): string => {
-  return cookies().get(THEME_COOKIE)?.value || 'dark';
+export const getTheme = () => {
+  return cookies().get(THEME_COOKIE)?.value;
 }
-
 
