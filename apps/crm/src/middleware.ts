@@ -24,16 +24,16 @@ export function middleware(request: NextRequest) {
 
   let response = NextResponse.next();
 
-  const auth = true;//request.headers.get('Authorization');
-  if (!auth && request.nextUrl.pathname.startsWith(routes.ROOT)) {
-    response = NextResponse.redirect(new URL(routes.AUTH, request.nextUrl.href), {
-      status: 307
-    });
-  } else if (auth && request.nextUrl.pathname === routes.AUTH) {
-    response = NextResponse.redirect(new URL(routes.ROOT, request.nextUrl.href), {
-      status: 307
-    });
-  }
+  // const auth = true;//request.headers.get('Authorization');
+  // if (!auth && request.nextUrl.pathname.startsWith(routes.ROOT)) {
+  //   response = NextResponse.redirect(new URL(routes.AUTH, request.nextUrl.href), {
+  //     status: 307
+  //   });
+  // } else if (auth && request.nextUrl.pathname === routes.AUTH) {
+  //   response = NextResponse.redirect(new URL(routes.ROOT, request.nextUrl.href), {
+  //     status: 307
+  //   });
+  // }
 
   if (cookieValue != locale) {
     const setCookies = response.headers.get('set-cookie');

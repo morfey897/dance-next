@@ -3,8 +3,10 @@ import Aside from '@/views/Aside';
 
 export default async function RootLayout({
   children,
+  modal,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode,
+  modal: React.ReactNode;
 }) {
   return (<>
     <Header />
@@ -13,6 +15,7 @@ export default async function RootLayout({
       <div className='container px-6 py-4 mx-auto'>
         {children}
       </div>
+      {modal}
     </main>
   </>)
 }
